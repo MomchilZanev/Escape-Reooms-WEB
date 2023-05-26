@@ -11,6 +11,7 @@
 
         private $selectRiddleById;
         private $selectRoomById;
+        private $selectRiddlesByRoomId;
         private $selectRoomRiddleByRoom;
         
         #
@@ -65,6 +66,9 @@
 
             $sql = "SELECT * FROM escaperoom WHERE room_id = ?";
             $this->selectRoomById = $this->connection->prepare($sql);
+
+            $sql = "SELECT riddle_id FROM room_riddle WHERE room_id = ?";
+            $this->selectRiddlesByRoomId = $this->connection->prepare($sql);
 
             $sql = "SELECT * FROM riddle WHERE riddle_id = ?";
             $this->selectRiddleById = $this->connection->prepare($sql);
@@ -205,6 +209,42 @@
             }
         }
 
+        public function selectRiddlesByRoomId($id) {
+            try {
+                $this->selectRiddleById->execute($id);
+                $result = $this->selectRiddleById->fetch();    # fetch, fetchColumn
+                
+                if ($result === NULL) {
+                    return false;
+                }
+                return $result;
+
+            } catch(PDOException $e) {
+                $this->connection->rollBack();
+                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            }
+        }
+
+        public function selectRiddlesByRoomIdQuery($id) {
+            try {
+                $riddles = array();
+                $riddle_ids = $this->selectRoomRiddleByRoomQuery($id);
+
+                foreach ($riddle_ids as $row) {
+                    array_push($riddles, $this->selectRiddleByIdQuery(array($row['riddle_id'])));
+                }    # fetch, fetchColumn
+                
+                if ($riddles === NULL) {
+                    return false;
+                }
+                return $riddles;
+
+            } catch(PDOException $e) {
+                $this->connection->rollBack();
+                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            }
+        }
+
         #
         #
         # filter part
@@ -222,10 +262,21 @@
         }
         
         public function selectQueryByFilter($table, $cols, $comps, $vals) {
-            $sql = $this->generateQueryForFilter($table, $cols, $comps, $vals);
-            $query = $this->connection->query($sql) or die("failed!");
-            $result = $query->fetchAll();
-            return $result;
+            try {
+                $sql = $this->generateQueryForFilter($table, $cols, $comps, $vals);
+                $query = $this->connection->query($sql) or die("failed!");
+                $result = $query->fetchAll();
+
+                if ($result === NULL) {
+                    return false;
+                }
+
+                return $result;
+
+            } catch(PDOException $e) {
+                $this->connection->rollBack();
+                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            }
         }
         /**
          * Close the connection to the DB
@@ -271,7 +322,7 @@
         $db = new Database();
 
         $room_id = 12;
-        $riddle_id = 5;
+        $riddle_id = 4;
 
         $arr = array($room_id, $riddle_id);
         $db->insertRoomRiddleQuery($arr);
@@ -304,9 +355,10 @@
         $query = $db->selectQueryByFilter($table, $cols, $comps, $vals);
         return $query;
     }
-    
-    function testFilterRoomQuery() {
 
+    function testSelectRiddlesByRoomIdQuery($id) {
+        $db = new Database();
+        return $db->selectRiddlesByRoomIdQuery(array($id));
     }
 
     function main() {
@@ -317,6 +369,7 @@
         # print_r(testFilterByRoom());
         # print_r(testSelectRiddleByIdQuery(5));
         # print_r(testSelectRoomByIdQuery(12));
+        # print_r(testSelectRiddlesByRoomIdQuery(12)[0]);
         # print_r(testSelectRoomRiddleByRoomQuery(12));
 
     }
