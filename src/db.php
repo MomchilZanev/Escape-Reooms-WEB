@@ -1,366 +1,438 @@
 <?php
-    class Database {
-        private $connection;
-        private $insertRoom;
-        private $insertRiddle;
-        private $insertRoomRiddle;
-        
-        private $selectRooms;
-        private $selectRiddles;
-        private $selectRoomRiddles;
+class Database
+{
+    private $connection;
 
-        private $selectRiddleById;
-        private $selectRoomById;
-        private $selectRiddlesByRoomId;
-        private $selectRoomRiddleByRoom;
-        
-        #
-        #
-        # initial part
-        public function __construct() {
-            $config = parse_ini_file('../config/config.ini', true);
+    private $insertRoom;
+    private $insertRiddle;
+    private $insertRoomRiddle;
 
-            $type = $config['db']['db_type'];
-            $host = $config['db']['host'];
-            $name = $config['db']['db_name'];
-            $port = $config['db']['port'];
-            $user = $config['db']['user'];
-            $password = $config['db']['password'];
+    private $selectRoomById;
+    private $selectRiddleById;
+    private $selectRoomRiddlesByRoomId;
+    private $selectRoomRiddlesByRiddleId;
 
-            $this->init($type, $host, $name, $port, $user, $password);
-        }
-  
-        private function init($type, $host, $name, $port, $user, $password) {
-            try {
-                $this->connection = new PDO("$type:host=$host;dbname=$name;port=$port", $user, $password,
-                    array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    private $selectRooms;
+    private $selectRiddles;
+    private $selectRoomRiddles;
 
-                $this->prepareStatements();
-            } catch(PDOException $e) {
-                echo "Connection failed: " . $e->getMessage();
-            }
-        }
+    private $selectRoomsFilter;
 
-        # args are: nameColumn; compareSign: =,<,>,<=,>= ; value
-        private function generateQueryForFilter($table, $cols, $comps, $vals) {
-            $sql = "SELECT * FROM $table WHERE ";
-            $conditions = array();
-        
-            for ($i = 0; $i < count($comps); $i++) {
-                array_push($conditions, $cols[$i] . " " . $comps[$i] . " " . $vals[$i]);
-            }
+    public function __construct()
+    {
+        $config = parse_ini_file('../config/config.ini', true);
 
-            $sql .= implode(" AND ", $conditions);
-            return $sql;
-        }
+        $type = $config['db']['dbType'];
+        $host = $config['db']['host'];
+        $name = $config['db']['dbName'];
+        $port = $config['db']['port'];
+        $user = $config['db']['user'];
+        $password = $config['db']['password'];
 
-        private function prepareStatements() {
+        $this->init($type, $host, $name, $port, $user, $password);
+    }
 
-            $sql = "INSERT INTO escaperoom (name, room_lang, difficulty,
-                                            timeLimit, minPlayers, maxPlayers, image) 
-                                            VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $this->insertRoom = $this->connection->prepare($sql);
+    private function init($type, $host, $name, $port, $user, $password)
+    {
+        try {
+            $this->connection = new PDO(
+                "$type:host=$host;dbname=$name;port=$port",
+                $user,
+                $password,
+                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+            );
 
-            $sql = "INSERT INTO riddle (type, task, solution, riddle_lang, image) 
-                                        VALUES (?, ?, ?, ?, ?)";
-            $this->insertRiddle = $this->connection->prepare($sql);
-
-            $sql = "INSERT INTO room_riddle (room_id, riddle_id) VALUES (?, ?)";
-            $this->insertRoomRiddle = $this->connection->prepare($sql);
-
-            $sql = "SELECT * FROM escaperoom";
-            $this->selectRooms = $this->connection->prepare($sql);
-
-            $sql = "SELECT * FROM riddle";
-            $this->selectRiddles = $this->connection->prepare($sql);
-
-            $sql = "SELECT * FROM room_riddle";
-            $this->selectRoomRiddles = $this->connection->prepare($sql);
-
-            $sql = "SELECT * FROM escaperoom WHERE room_id = ?";
-            $this->selectRoomById = $this->connection->prepare($sql);
-
-            $sql = "SELECT riddle_id FROM room_riddle WHERE room_id = ?";
-            $this->selectRiddlesByRoomId = $this->connection->prepare($sql);
-
-            $sql = "SELECT * FROM riddle WHERE riddle_id = ?";
-            $this->selectRiddleById = $this->connection->prepare($sql);
-
-            $sql = "SELECT * FROM room_riddle WHERE room_id = ?";
-            $this->selectRoomRiddleByRoom = $this->connection->prepare($sql);
-            
-        }
-
-        #
-        #
-        # insert part
-        # return true if the insertion is finished successfully
-        public function insertRoomQuery($data) {
-            try {
-                $this->insertRoom->execute($data);
-
-                $sql = "SELECT MAX(room_id) FROM escaperoom";
-                $query = $this->connection->query($sql) or die("failed!");
-                $result = $query->fetch();
-
-                return ["success" => true, "id" => $result[0]];
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        # return true if the insertion is finished successfully
-        public function insertRiddleQuery($data) {
-            try {
-                $this->insertRiddle->execute($data);
-
-                $sql = "SELECT MAX(riddle_id) FROM riddle";
-                $query = $this->connection->query($sql) or die("failed!");
-                $result = $query->fetch();
-                
-                return ["success" => true, "id" => $result[0]];
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        public function insertRoomRiddleQuery($data) {
-            try {
-
-                if (!$this->selectRoomByIdQuery(array($data[0]))["data"] or 
-                    !$this->selectRiddleByIdQuery(array($data[1]))["data"]) {
-                        return ["success" => false, "error" => "Incorrect input"];
-                }
-
-                $this->insertRoomRiddle->execute($data);
-                return ["success" => true];
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        #
-        #
-        # select all part
-        # return an array of arrays
-        public function selectRoomsQuery() {
-            try {
-                $this->selectRooms->execute();
-                return ["success" => true, "data" => $this->selectRooms->fetchAll()];
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        # return an array of arrays
-        public function selectRiddlesQuery() {
-            try {
-                $this->selectRiddles->execute();
-                return ["success" => true, "data" => $this->selectRiddles->fetchAll()];
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        # return an array of arrays
-        public function selectRoomRiddlesQuery() {
-            try {
-                $this->selectRoomRiddles->execute();
-                return ["success" => true, "data" => $this->selectRoomRiddles->fetchAll()];
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        #
-        #
-        # select by id part
-        # return an array if existed. Else returns nothing
-        public function selectRoomByIdQuery($id) {
-
-            try {
-                $this->selectRoomById->execute($id);
-                $result = $this->selectRoomById->fetch();
-                
-                return ["success" => true, "data" => $result]; # if the room doesn't exist, return null
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        public function selectRiddleByIdQuery($id) {
-
-            try {
-                $this->selectRiddleById->execute($id);
-                $result = $this->selectRiddleById->fetch();    # fetch, fetchColumn
-                
-                return ["success" => true, "data" => $result];  # if the room doesn't exist, return null
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        #return array of arrays of room_id | riddle_id
-        private function selectRoomRiddleByRoomQuery($id) {
-
-            try {
-                $this->selectRoomRiddleByRoom->execute($id);
-                $result = $this->selectRoomRiddleByRoom->fetchAll();    # fetch, fetchColumn
-                
-                return ["success" => true, "data" => $result];  # if the room doesn't exist, return empty array
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        public function selectRiddlesByRoomIdQuery($id) {
-            try {
-                $riddles = array();
-                $riddle_ids = $this->selectRoomRiddleByRoomQuery($id)["data"];
-
-                foreach ($riddle_ids as $row) {
-                    array_push($riddles, $this->selectRiddleByIdQuery(array($row['riddle_id']))["data"]);
-                }    # fetch, fetchColumn
-                
-                if ($riddles === NULL) {
-                    return ["success" => false, "error" => "No riddles in the room"];
-                }
-                return ["success" => true, "data" => $riddles];
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-
-        #
-        #
-        # filter part
-        
-        public function selectQueryByFilter($table, $cols, $comps, $vals) {
-            try {
-                $sql = $this->generateQueryForFilter($table, $cols, $comps, $vals);
-                $query = $this->connection->query($sql) or die("failed!");
-                $result = $query->fetchAll();
-
-                return ["success" => true, "data" => $result]; # $result == empty array if no results;
-
-            } catch(PDOException $e) {
-                $this->connection->rollBack();
-                return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
-            }
-        }
-        /**
-         * Close the connection to the DB
-         */
-        function __destruct() {
-            $this->connection = null;
+            $this->prepareStatements();
+        } catch (PDOException $e) {
+            echo "Connection failed: " . $e->getMessage();
         }
     }
 
-    #
-    #
-    # test part (lazy style)
-    function testRoomInsert() {
-        $db = new Database();
-        $n = 'abc';
-        $rl = 'en';
-        $tl = 223;
-        $df = 6;
-        $minp = 3;
-        $maxp = 8;
-        $img = 'nonono';
+    private function prepareStatements()
+    {
 
-        $arr = array($n, $rl, $df, $tl, $minp, $maxp, $img);
-        return $db->insertRoomQuery($arr);
-        # $db->selectRoomsQuery();
+        $sql = "INSERT INTO escapeRoom (name, language, difficulty, timeLimit, minPlayers, maxPlayers, image) 
+                VALUES (:name, :language, :difficulty, :timeLimit, :minPlayers, :maxPlayers, :image)";
+        $this->insertRoom = $this->connection->prepare($sql);
+
+        $sql = "INSERT INTO riddle (type, language, task, solution, image) 
+                VALUES (:type, :language, :task, :solution, :image)";
+        $this->insertRiddle = $this->connection->prepare($sql);
+
+        $sql = "INSERT INTO roomRiddle (roomId, riddleId)
+                VALUES (:roomId, :riddleId)";
+        $this->insertRoomRiddle = $this->connection->prepare($sql);
+
+        $sql = "SELECT * FROM escapeRoom";
+        $this->selectRooms = $this->connection->prepare($sql);
+
+        $sql = "SELECT * FROM riddle";
+        $this->selectRiddles = $this->connection->prepare($sql);
+
+        $sql = "SELECT * FROM roomRiddle";
+        $this->selectRoomRiddles = $this->connection->prepare($sql);
+
+        $sql = "SELECT * FROM escapeRoom 
+                WHERE id = :id";
+        $this->selectRoomById = $this->connection->prepare($sql);
+
+        $sql = "SELECT * FROM riddle
+                WHERE id = :id";
+        $this->selectRiddleById = $this->connection->prepare($sql);
+
+        $sql = "SELECT * FROM roomRiddle 
+                WHERE roomId = :roomId";
+        $this->selectRoomRiddlesByRoomId = $this->connection->prepare($sql);
+
+        $sql = "SELECT * FROM roomRiddle 
+                WHERE riddleId = :riddleId";
+        $this->selectRoomRiddlesByRiddleId = $this->connection->prepare($sql);
+
+        $sql = "SELECT * FROM escapeRoom 
+                WHERE (:language IS NULL OR language = :language)
+                AND (:minDifficulty IS NULL OR difficulty >= :minDifficulty)
+                AND (:maxDifficulty IS NULL OR difficulty <= :maxDifficulty)
+                AND (:minTimeLimit IS NULL OR timeLimit >= :minTimeLimit)
+                AND (:maxTimeLimit IS NULL OR timeLimit <= :maxTimeLimit)
+                AND (:minPlayers IS NULL OR minPlayers >= :minPlayers)
+                AND (:maxPlayers IS NULL OR maxPlayers <= :maxPlayers)";
+        $this->selectRoomsFilter = $this->connection->prepare($sql);
     }
 
-    function testRiddleInsert() {
-        $db = new Database();
+    public function insertRoomQuery($name, $language, $difficulty, $timeLimit, $minPlayers, $maxPlayers, $image)
+    {
+        try {
+            $this->insertRoom->execute([
+                'name' => $name,
+                'language' => $language,
+                'difficulty' => $difficulty,
+                'timeLimit' => $timeLimit,
+                'minPlayers' => $minPlayers,
+                'maxPlayers' => $maxPlayers,
+                'image' => $image
+            ]);
 
-        $type = "numericc";
-        $task = "How is called a man living in Vratsa";
-        $sol = "Pustinqk";
-        $rl = "gb";
-        $image = "nema";
+            $sql = "SELECT MAX(id) FROM escapeRoom";
+            $query = $this->connection->query($sql) or die("failed!");
+            $result = $query->fetch();
 
-        $arr = array($type, $task, $sol, $rl, $image);
-        return $db->insertRiddleQuery($arr);
-        # $db->selectRiddlesQuery();
+            return ["success" => true, "id" => $result[0]];
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
+    }
+      
+    public function insertRiddleQuery($type, $language, $task, $solution, $image)
+    {
+        try {
+            $this->insertRiddle->execute([
+                'type' => $type,
+                'language' => $language,
+                'task' => $task,
+                'solution' => $solution,
+                'image' => $image
+            ]);
+
+            $sql = "SELECT MAX(id) FROM riddle";
+            $query = $this->connection->query($sql) or die("failed!");
+            $result = $query->fetch();
+
+            return ["success" => true, "id" => $result[0]];
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
     }
 
-    function testRoomRiddleInsert() {
-        $db = new Database();
+    public function insertRoomRiddleQuery($roomId, $riddleId)
+    {
+        try {
+            if (
+                !$this->selectRoomByIdQuery($roomId)["data"] or
+                !$this->selectRiddleByIdQuery($riddleId)["data"]
+            ) {
+                return ["success" => false, "error" => "Incorrect input"];
+            }
 
-        $room_id = 17;
-        $riddle_id = 6;
-
-        $arr = array($room_id, $riddle_id);
-        return $db->insertRoomRiddleQuery($arr);
-        # $db->selectRoomRiddlesQuery();
+            $this->insertRoomRiddle->execute([
+                'roomId' => $roomId,
+                'riddleId' => $riddleId,
+            ]);
+            return ["success" => true];
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
     }
 
-    function testSelectRoomByIdQuery($id) {
-        $db = new Database();
-        return $db->selectRoomByIdQuery(array($id));
+    public function selectRoomByIdQuery($id)
+    {
+        try {
+            $this->selectRoomById->execute(['id' => $id]);
+            $result = $this->selectRoomById->fetch();
+
+            return ["success" => true, "data" => $result]; # if the room doesn't exist, return null
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
     }
 
-    function testSelectRiddleByIdQuery($id) {
-        $db = new Database();
-        return $db->selectRiddleByIdQuery(array($id));
+    public function selectRiddleByIdQuery($id)
+    {
+        try {
+            $this->selectRiddleById->execute(['id' => $id]);
+            $result = $this->selectRiddleById->fetch(); # fetch, fetchColumn
+
+            return ["success" => true, "data" => $result]; # if the room doesn't exist, return null
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
     }
 
-    function testSelectRoomRiddleByRoomQuery($id) {
-        $db = new Database();
-        return $db->selectRoomRiddleByRoomQuery(array($id));
+    public function selectRiddlesInRoomByRoomIdQuery($roomId)
+    {
+        try {
+            $riddles = array();
+            $riddleIds = array_column($this->selectRoomRiddlesByRoomIdQuery($roomId)["data"], 'riddleId');
+
+            foreach ($riddleIds as $riddleId) {
+                array_push($riddles, $this->selectRiddleByIdQuery($riddleId)["data"]);
+            } # fetch, fetchColumn
+
+            if ($riddles === NULL) {
+                return ["success" => false, "error" => "No riddles in the room"];
+            }
+            return ["success" => true, "data" => $riddles];
+
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
     }
 
-    function testFilterByRoomAndRiddle() {
-        $db = new Database();
+    public function selectRoomRiddlesByRoomIdQuery($roomId)
+    {
+        try {
+            $this->selectRoomRiddlesByRoomId->execute(['roomId' => $roomId]);
+            $result = $this->selectRoomRiddlesByRoomId->fetchAll(); # fetch, fetchColumn
 
-        $table = "escaperoom"; # same for "riddle"
-        $cols = array("difficulty", "timeLimit");
-        $comps = array("<", "<=");
-        $vals = array(6, 122);
-
-        $query = $db->selectQueryByFilter($table, $cols, $comps, $vals);
-        return $query;
+            return ["success" => true, "data" => $result]; # if the room doesn't exist, return null
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
     }
 
-    function testSelectRiddlesByRoomIdQuery($id) {
-        $db = new Database();
-        return $db->selectRiddlesByRoomIdQuery(array($id));
+    public function selectRoomRiddlesByRiddleIdQuery($riddleId)
+    {
+        try {
+            $this->selectRoomRiddlesByRoomId->execute(['riddleId' => $riddleId]);
+            $result = $this->selectRoomRiddlesByRoomId->fetchAll(); # fetch, fetchColumn
+
+            return ["success" => true, "data" => $result]; # if the room doesn't exist, return null
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
     }
 
-    function main() {
-        
-        # print_r(testRoomInsert());
-        # print_r(testRiddleInsert());
-        # print_r(testRoomRiddleInsert());
-        # print_r(testFilterByRoomAndRiddle());
-        # print_r(testSelectRiddleByIdQuery(5));
-        # print_r(testSelectRoomByIdQuery(17));
-        # print_r(testSelectRiddlesByRoomIdQuery(12));
-        # print_r(testSelectRoomRiddleByRoomQuery(12));
-
+    public function selectRoomsQuery()
+    {
+        try {
+            $this->selectRooms->execute();
+            return ["success" => true, "data" => $this->selectRooms->fetchAll()];
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
     }
 
-    main();
+    public function selectRiddlesQuery()
+    {
+        try {
+            $this->selectRiddles->execute();
+            return ["success" => true, "data" => $this->selectRiddles->fetchAll()];
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
+    }
+
+    public function selectRoomRiddlesQuery()
+    {
+        try {
+            $this->selectRoomRiddles->execute();
+            return ["success" => true, "data" => $this->selectRoomRiddles->fetchAll()];
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
+    }
+
+    public function selectRoomsFilterQuery(
+        $language = null,
+        $minDifficulty = null,
+        $maxDifficulty = null,
+        $minTimeLimit = null,
+        $maxTimeLimit = null,
+        $minPlayers = null,
+        $maxPlayers = null,
+    ) {
+        try {
+            $this->selectRoomsFilter->execute([
+                'language' => $language,
+                'minDifficulty' => $minDifficulty,
+                'maxDifficulty' => $maxDifficulty,
+                'minTimeLimit' => $minTimeLimit,
+                'maxTimeLimit' => $maxTimeLimit,
+                'minPlayers' => $minPlayers,
+                'maxPlayers' => $maxPlayers,
+            ]);
+
+            return ["success" => true, "data" => $this->selectRoomsFilter->fetchAll()];
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+        }
+    }
+
+    # args are: nameColumn; compareSign: =,<,>,<=,>= ; value
+
+    // public function selectQueryByFilter($table, $cols, $comps, $vals) {
+    //     try {
+    //         $sql = $this->generateQueryForFilter($table, $cols, $comps, $vals);
+    //         $query = $this->connection->query($sql) or die("failed!");
+    //         $result = $query->fetchAll();
+
+    //         return ["success" => true, "data" => $result]; # $result == empty array if no results;
+
+    //     } catch(PDOException $e) {
+    //         $this->connection->rollBack();
+    //         return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+    //     }
+    // }
+
+
+    // private function generateQueryForFilter($table, $cols, $comps, $vals) {
+    //     $sql = "SELECT * FROM $table WHERE ";
+    //     $conditions = array();
+
+    //     for ($i = 0; $i < count($comps); $i++) {
+    //         array_push($conditions, $cols[$i] . " " . $comps[$i] . " " . $vals[$i]);
+    //     }
+
+    //     $sql .= implode(" AND ", $conditions);
+    //     return $sql;
+    // }
+
+    
+
+    // function testFilterRooms()
+    // {
+    //     $db = new Database();
+
+    //     $table = "escapeRoom"; # same for "riddle"
+    //     $cols = array("difficulty", "timeLimit");
+    //     $comps = array("<", "<=");
+    //     $vals = array(6, 122);
+
+    //     //$query = $db->selectQueryByFilter($table, $cols, $comps, $vals);
+    //     //return $query;
+    // }
+
+    function __destruct()
+    {
+        $this->connection = null;
+    }
+}
+
+function testRoomInsert()
+{
+    $db = new Database();
+    $name = 'abc';
+    $language = 'en';
+    $difficulty = 6;
+    $timeLimit = 223;
+    $minPlayers = 3;
+    $maxPlayers = 8;
+    $image = 'nonono';
+
+    $data = [
+        'name' => $name,
+        'language' => $language,
+        'difficulty' => $difficulty,
+        'timeLimit' => $timeLimit,
+        'minPlayers' => $minPlayers,
+        'maxPlayers' => $maxPlayers,
+        'image' => $image
+    ];
+
+    return $db->insertRoomQuery($name, $language, $difficulty, $timeLimit, $minPlayers, $maxPlayers, $image);
+}
+
+function testRiddleInsert()
+{
+    $db = new Database();
+
+    $type = "numericc";
+    $language = "gb";
+    $task = "How is called a man living in Vratsa";
+    $solution = "Pustinqk";
+    $image = "nema";
+
+    return $db->insertRiddleQuery($type, $language, $task, $solution, $image);
+}
+
+function testRoomRiddleInsert()
+{
+    $db = new Database();
+
+    $roomId = 15;
+    $riddleId = 6;
+
+    return $db->insertRoomRiddleQuery($roomId, $riddleId);
+}
+
+function testSelectRoomByIdQuery($id)
+{
+    $db = new Database();
+    return $db->selectRoomByIdQuery($id);
+}
+
+function testSelectRiddleByIdQuery($id)
+{
+    $db = new Database();
+    return $db->selectRiddleByIdQuery($id);
+}
+
+function testSelectRiddlesInRoomByRoomIdQuery($id)
+{
+    $db = new Database();
+    return $db->selectRiddlesInRoomByRoomIdQuery($id);
+}
+
+function testSelectRoomsFilterQuery()
+{
+    $db = new Database();
+
+    return $db->selectRoomsFilterQuery("en", 5, 6, 123, 223, 1, 8);
+}
+
+function dbMain()
+{
+    # print_r(testRoomInsert());
+    # print_r(testRiddleInsert());
+    # print_r(testRoomRiddleInsert());
+
+    # print_r(testSelectRoomByIdQuery(17));
+    # print_r(testSelectRiddleByIdQuery(5));
+    # print_r(testSelectRiddlesInRoomByRoomIdQuery(16));
+
+    # print_r(testSelectRoomsFilterQuery());
+}
+
+dbMain();
 ?>
