@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Backbone</title>
+    <script defer src="scripts/menuScript.js"></script>
+    <link rel="stylesheet" href="css/backboneStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+
+<body>
+  
+  <header>
+    
+    <div class="box">
+      <div class="btnMenu">
+        <span class="fas fa-bars"></span>
+      </div>
+    </div>
+
+    <div class="box" id="headerCenter">
+      <h1 id="caption">Escaperoom demo</h1>
+    </div>
+
+    <div class="box" id="headerRight">
+      <button type="button" id="LanguageIconBtn">EN</button>
+    </div>
+  
+  </header>
+
+  <nav class="sidebar">
+    <ul>
+      <li class="active"><a href="#url..."> Homepage </a></li>
+      <li><a href="#url..."> Show riddles </a></li>
+      <li><a href="#url..."> Import room </a></li>
+      <li><a href="#url..."> Export rooms </a></li>
+      <li><a href="#url..."> Documentation </a></li>
+    </ul>
+  </nav>
+    
+  <div class="LanguageFormClass" id="LanguageForm">
+    <form>
+      <label for="lang">Choose language:</label>
+      <input type="text" id="langTextBox" name="lang"><br>
+      <input type="button" id="submitLangButton" value="Submit">
+    </form>
+  </div>
+
+</body>
+</html>
