@@ -3,28 +3,9 @@ var sidebar = document.querySelector('.sidebar');
 var listItems = document.querySelectorAll('nav ul li');
 
 var LanguageIconBtn = document.getElementById("LanguageIconBtn");
-var LanguageForm = document.getElementById('LanguageForm');
-var langTextBox = document.getElementById("langTextBox");
-
-var submitLangButton = document.getElementById("submitLangButton");
-
-LanguageForm.style.display = 'none';
 
 LanguageIconBtn.addEventListener('click', function () {
-	if (LanguageForm.style.display == 'none') {
-		LanguageForm.style.display = 'block';
-	} else {
-		LanguageForm.style.display = 'none';
-	}
-});
-
-submitLangButton.addEventListener('click', function () {
-
-	var text = langTextBox.value;
-	langTextBox.value = '';
-	LanguageForm.style.display = 'none';
-	LanguageIconBtn.textContent = text;
-
+	window.location = 'index.html';
 });
 
 // Toggle the click class and show class on button click
