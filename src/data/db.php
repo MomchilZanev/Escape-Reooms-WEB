@@ -36,7 +36,7 @@ class Database
 
     public function __construct()
     {
-        $config = parse_ini_file('../config/config.ini', true);
+        $config = parse_ini_file(__DIR__ . "/../../config/config.ini", true);
 
         $type = $config['db']['dbType'];
         $host = $config['db']['host'];
