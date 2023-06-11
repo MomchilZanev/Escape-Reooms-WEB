@@ -6,15 +6,17 @@ require_once(__DIR__ . "/./serializationService.php");
 class RiddleService
 {
     private $db;
+    private $serializationService;
 
     public function __construct($db = new Database())
     {
         $this->db = $db;
+        $this->serializationService = new SerializationService();
     }
 
     public function importFromJson($jsonContents)
     {
-        $object = getObject($jsonContents);
+        $object = $this->serializationService->getObject($jsonContents);
         if ($object == null) {
             echo "Invalid JSON file.";
             return false;
@@ -25,8 +27,6 @@ class RiddleService
 
     public function importFromObj($object, $roomId = null)
     {
-        //echo print_r($object);
-
         if (!is_array($object)) {
             $object = array($object);
         }
@@ -61,7 +61,6 @@ class RiddleService
         return $result['success'];
     }
 
-    // Not fully tested.
     public function addRiddle($riddle)
     {
         $result = $this->db->insertRiddleQuery(
@@ -83,7 +82,6 @@ class RiddleService
         return $result['success'];
     }
 
-    // Not fully tested.
     public function updateRiddle($riddle)
     {
         if (is_null($riddle->getId())) {
@@ -130,8 +128,6 @@ class RiddleService
         return $result['success'];
     }
 
-    // The language argument is not meant to stay here. 
-    // It should be a global variable that is set by the user. 
     public function getAllRiddles($language)
     {
         $db = new Database();
@@ -144,7 +140,6 @@ class RiddleService
         return $this->dbResultToArrayOfRiddles($result, $language);
     }
 
-    // See comment above getAllRiddles method.
     public function getAllRiddlesInRoom($roomId, $language)
     {
         $db = new Database();
@@ -157,7 +152,6 @@ class RiddleService
         return $this->dbResultToArrayOfRiddles($result, $language);
     }
 
-    // See comment above getAllRiddles method.
     private function dbResultToArrayOfRiddles($dbResult, $language)
     {
         $riddles = array();

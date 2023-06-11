@@ -8,16 +8,18 @@ class EscapeRoomService
 {
     private $db;
     private $riddleService;
+    private $serializationService;
 
     public function __construct($db = new Database())
     {
         $this->db = $db;
         $this->riddleService = new RiddleService($db);
+        $this->serializationService = new SerializationService();
     }
 
     public function importFromJson($jsonContents)
     {
-        $object = getObject($jsonContents);
+        $object = $this->serializationService->getObject($jsonContents);
         if ($object == null) {
             echo "Invalid JSON file.";
             return false;
@@ -56,7 +58,6 @@ class EscapeRoomService
         }
     }
 
-    // Not fully tested.
     public function addRoom($room)
     {
         $result = $this->db->insertRoomQuery(
@@ -80,7 +81,6 @@ class EscapeRoomService
         return $result['success'];
     }
 
-    // Not fully tested.
     public function updateRoom($room)
     {
         if (is_null($room->getId())) {
@@ -128,9 +128,7 @@ class EscapeRoomService
         return $result['success'];
     }
 
-    // The language argument is not meant to stay here. 
-    // It should be a global variable that is set by the user. 
-    public function getAllRooms($language)
+    public function getAllRooms($language = null)
     {
         $result = $this->db->selectRoomsQuery();
 
@@ -141,12 +139,25 @@ class EscapeRoomService
         return $this->dbResultToArrayOfRooms($result, $language);
     }
 
-    // See comment above getAllRooms method.
-    private function dbResultToArrayOfRooms($dbResult, $language)
+    public function filterRooms($language = null, $name = null, $minDifficulty = null, $maxDifficulty = null, $minTimeLimit = null, $maxTimeLimit = null, $minPlayers = null, $maxPlayers = null)
+    {
+        $result = $this->db->selectRoomsWhereQuery($language, $name, $minDifficulty, $maxDifficulty, $minTimeLimit, $maxTimeLimit, $minPlayers, $maxPlayers);
+
+        if (!$result['success']) {
+            return null;
+        }
+
+        return $this->dbResultToArrayOfRooms($result, $language);
+    }
+
+    private function dbResultToArrayOfRooms($dbResult, $language = null)
     {
         $rooms = array();
         foreach ($dbResult['data'] as $record) {
-            $translation = $this->db->selectRoomTranslationQuery($record['id'], $language)['data'];
+            $translation = null;
+            if (!is_null($language)) {
+                $translation = $this->db->selectRoomTranslationQuery($record['id'], $language)['data'];
+            }
 
             if (!$translation) {
                 $translation = $this->db->selectRoomTranslationsQuery($record['id'])['data'][0];

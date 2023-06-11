@@ -141,6 +141,7 @@ class Database
         $sql = "SELECT * FROM escapeRoom AS er
                 INNER JOIN escapeRoomTranslation AS ert ON er.id = ert.roomId 
                 WHERE (:language IS NULL OR ert.language = :language)
+                AND (:name IS NULL OR LOWER(ert.name) LIKE LOWER(CONCAT('%', :name, '%')))
                 AND (:minDifficulty IS NULL OR er.difficulty >= :minDifficulty)
                 AND (:maxDifficulty IS NULL OR er.difficulty <= :maxDifficulty)
                 AND (:minTimeLimit IS NULL OR er.timeLimit >= :minTimeLimit)
@@ -458,6 +459,7 @@ class Database
 
     public function selectRoomsWhereQuery(
         $language = null,
+        $name = null,
         $minDifficulty = null,
         $maxDifficulty = null,
         $minTimeLimit = null,
@@ -468,6 +470,7 @@ class Database
         try {
             $this->selectRoomsWhere->execute([
                 'language' => $language,
+                'name' => $name,
                 'minDifficulty' => $minDifficulty,
                 'maxDifficulty' => $maxDifficulty,
                 'minTimeLimit' => $minTimeLimit,

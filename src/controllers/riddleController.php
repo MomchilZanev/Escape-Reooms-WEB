@@ -33,11 +33,16 @@ function serveRequest($method, $action)
                 return;
             }
 
-            $service = new RiddleService();
-            $service->importFromJson($_POST["jsonContents"]);
+            importFromJson();
             break;
         default:
             echo 'Unknown action.';
     }
+}
+
+function importFromJson()
+{
+    $service = new RiddleService();
+    $service->importFromJson($_POST["jsonContents"]);
 }
 ?>

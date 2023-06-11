@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home Page Tests</title>
+</head>
+<meta charset="utf-8">
+
+<body>
+
+    <button type="button" onclick="testGetAllRooms(false)">Test Get All Rooms</button>
+    <br />
+    <button type="button" onclick="testGetAllRooms(true)">Test Get All Rooms Export</button>
+    <br />
+    <button type="button" onclick="testFilterRooms(false)">Test Filter Rooms</button>
+    <br />
+    <button type="button" onclick="testFilterRooms(true)">Test Filter Rooms Export</button>
+    <br />
+
+</body>
+
+<script>
+    function testGetAllRooms(exportParam = false) {
+        var url = "../src/controllers/escapeRoomController.php?";
+
+        if (exportParam) {
+            fetch(url + new URLSearchParams({ action: "getAllRooms", language: "en", export: exportParam }))
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error("Error: " + response.status);
+                })
+                .then(function (blob) {
+                    var temp = document.createElement('a');
+                    temp.href = URL.createObjectURL(blob);
+                    temp.download = 'all-rooms-export.json';
+                    temp.click();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        else {
+            fetch(url + new URLSearchParams({ action: "getAllRooms", language: "en" }))
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("Error: " + response.status);
+                    }
+                })
+                .then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    }
+
+    function testFilterRooms(exportParam = false) {
+        var url = "../src/controllers/escapeRoomController.php?";
+        var searchParams = {
+            action: "filterRooms",
+            language: "bg",
+            name: encodeURIComponent("ескейп"),
+            minDifficulty: 1,
+            maxDifficulty: 8,
+            minTimeLimit: 10,
+            maxTimeLimit: 240,
+            minPlayers: 1,
+            maxPlayers: 10,
+            export: exportParam
+        }
+
+        if (exportParam) {
+            fetch(url + new URLSearchParams(searchParams))
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error("Error: " + response.status);
+                })
+                .then(function (blob) {
+                    var temp = document.createElement('a');
+                    temp.href = URL.createObjectURL(blob);
+                    temp.download = 'filtered-rooms-export.json';
+                    temp.click();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        else {
+            fetch(url + new URLSearchParams(searchParams))
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("Error: " + response.status);
+                    }
+                })
+                .then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    }
+</script>
+
+</html>
