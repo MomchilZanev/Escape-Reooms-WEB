@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/../src/data/db.php");
+require_once(__DIR__ . '/../src/data/db.php');
 
 function testInsertRoomQuery()
 {
@@ -14,11 +14,11 @@ function testInsertRoomQuery()
 
     $result = $db->insertRoomQuery($difficulty, $timeLimit, $minPlayers, $maxPlayers, $image);
     if (!$result['success']) {
-        print_r("Could Not add room.");
+        print_r('Could Not add room.');
         return;
     }
 
-    $roomId = $result['id'] . "<br/>";
+    $roomId = $result['id'] . '<br/>';
     $db->insertRoomTranslationQuery($roomId, $language, $name);
 }
 
@@ -26,19 +26,19 @@ function testInsertRiddleQuery()
 {
     $db = new Database();
 
-    $type = "numeric";
-    $language = "bg";
-    $task = "Тестова загадка";
-    $solution = "Няма?";
-    $image = "not found";
+    $type = 'numeric';
+    $language = 'bg';
+    $task = 'Тестова загадка';
+    $solution = 'Няма?';
+    $image = 'not found';
 
     $result = $db->insertRiddleQuery($type, $image);
     if (!$result['success']) {
-        print_r("Could Not add riddle.");
+        print_r('Could Not add riddle.');
         return;
     }
 
-    $id = $result['id'] . "<br/>";
+    $id = $result['id'] . '<br/>';
     $db->insertRiddleTranslationQuery($id, $language, $task, $solution);
 }
 
@@ -58,11 +58,11 @@ function testSelectRoomQuery()
     $id = 1;
 
     print_r($db->selectRoomQuery($id));
-    print_r("<br/>");
-    print_r($db->selectRoomTranslationQuery($id, "en"));
-    print_r("<br/>");
+    print_r('<br/>');
+    print_r($db->selectRoomTranslationQuery($id, 'en'));
+    print_r('<br/>');
     print_r($db->selectRoomTranslationsQuery($id));
-    print_r("<br/>");
+    print_r('<br/>');
 }
 
 function testSelectRiddleQuery()
@@ -71,11 +71,11 @@ function testSelectRiddleQuery()
     $id = 1;
 
     print_r($db->selectRiddleQuery($id));
-    print_r("<br/>");
-    print_r($db->selectRiddleTranslationQuery($id, "bg"));
-    print_r("<br/>");
+    print_r('<br/>');
+    print_r($db->selectRiddleTranslationQuery($id, 'bg'));
+    print_r('<br/>');
     print_r($db->selectRiddleTranslationsQuery($id));
-    print_r("<br/>");
+    print_r('<br/>');
 }
 
 function testSelectRiddlesInRoomQuery()
@@ -90,7 +90,7 @@ function testSelectRoomsWhereQuery()
 {
     $db = new Database();
 
-    print_r($db->selectRoomsWhereQuery("en", 1, 10, 10, 90, 1, 10));
+    print_r($db->selectRoomsWhereQuery('en', 1, 10, 10, 90, 1, 10));
 }
 
 function testUpdateRoomQuery()
@@ -107,7 +107,7 @@ function testUpdateRoomQuery()
 
     $result = $db->updateRoomQuery($id, $difficulty, $timeLimit, $minPlayers, $maxPlayers, $image);
     if (!$result['success']) {
-        print_r("Could Not update room.");
+        print_r('Could Not update room.');
         return;
     }
 
@@ -126,7 +126,7 @@ function testUpdateRiddleQuery()
 
     $result = $db->updateRiddleQuery($id, $type, $image);
     if (!$result['success']) {
-        print_r("Could Not update riddle.");
+        print_r('Could Not update riddle.');
         return;
     }
 
@@ -137,7 +137,7 @@ function testDeleteRoomTranslationQuery()
 {
     $db = new Database();
     $roomId = 2;
-    $language = "en";
+    $language = 'en';
 
     return $db->deleteRoomTranslationQuery($roomId, $language);
 }
@@ -154,7 +154,7 @@ function testDeleteRiddleTranslationQuery()
 {
     $db = new Database();
     $riddleId = 2;
-    $language = "en";
+    $language = 'en';
 
     return $db->deleteRiddleTranslationQuery($riddleId, $language);
 }

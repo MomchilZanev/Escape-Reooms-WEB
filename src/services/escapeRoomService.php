@@ -1,8 +1,8 @@
 <?php
-require_once(__DIR__ . "/../data/db.php");
-require_once(__DIR__ . "/../models/escapeRoom.php");
-require_once(__DIR__ . "/./riddleService.php");
-require_once(__DIR__ . "/./serializationService.php");
+require_once(__DIR__ . '/../data/db.php');
+require_once(__DIR__ . '/./riddleService.php');
+require_once(__DIR__ . '/../models/escapeRoom.php');
+require_once(__DIR__ . '/./serializationService.php');
 
 class EscapeRoomService
 {
@@ -21,14 +21,14 @@ class EscapeRoomService
     {
         $object = $this->serializationService->getObject($jsonContents);
         if ($object == null) {
-            echo "Invalid import JSON.";
+            echo 'Invalid JSON contents';
             return false;
         }
 
         return $this->importFromObj($object);
     }
 
-    public function importFromObj($object)
+    private function importFromObj($object)
     {
         if (!is_array($object)) {
             $object = array($object);
@@ -58,11 +58,11 @@ class EscapeRoomService
         }
     }
 
-    public function addRoomJson($roomJson) 
+    public function addRoomJson($roomJson)
     {
         $object = $this->serializationService->getObject($roomJson);
         if ($object == null) {
-            echo "Invalid room data.";
+            echo 'Invalid escape room data';
             return false;
         }
 
@@ -80,7 +80,7 @@ class EscapeRoomService
         return $this->addRoom($room);
     }
 
-    public function addRoom($room)
+    private function addRoom($room)
     {
         $result = $this->db->insertRoomQuery(
             $room->difficulty,
@@ -103,11 +103,11 @@ class EscapeRoomService
         return $result['success'];
     }
 
-    public function updateRoomJson($roomJson) 
+    public function updateRoomJson($roomJson)
     {
         $object = $this->serializationService->getObject($roomJson);
         if ($object == null) {
-            echo "Invalid room data.";
+            echo 'Invalid escape room data';
             return false;
         }
 
@@ -125,10 +125,11 @@ class EscapeRoomService
         return $this->updateRoom($room);
     }
 
-    public function updateRoom($room)
+    private function updateRoom($room)
     {
-        if (is_null($room->id)) {
-            return false;
+        if (!$this->roomExists($room->id)) {
+            echo 'Escape room does not exist';
+            return;
         }
 
         $result = $this->db->updateRoomQuery(
@@ -147,11 +148,11 @@ class EscapeRoomService
         return false;
     }
 
-    public function translateRoomJson($roomJson) 
+    public function translateRoomJson($roomJson)
     {
         $object = $this->serializationService->getObject($roomJson);
         if ($object == null) {
-            echo "Invalid room translation data.";
+            echo 'Invalid escape room translation data.';
             return false;
         }
 
@@ -164,10 +165,11 @@ class EscapeRoomService
         return $this->translateRoom($room);
     }
 
-    public function translateRoom($room)
+    private function translateRoom($room)
     {
-        if (is_null($room->id)) {
-            return false;
+        if (!$this->roomExists($room->id)) {
+            echo 'Escape room does not exist';
+            return;
         }
 
         $translation = $this->db->selectRoomTranslationQuery($room->id, $room->language)['data'];
@@ -191,8 +193,9 @@ class EscapeRoomService
 
     public function deleteRoom($id)
     {
-        if (is_null($id)) {
-            return false;
+        if (!$this->roomExists($id)) {
+            echo 'Escape room does not exist';
+            return;
         }
 
         $result = $this->db->deleteRoomQuery($id);
@@ -200,8 +203,13 @@ class EscapeRoomService
         return $result['success'];
     }
 
-    public function getRoomDetails($id, $language)
+    public function getRoomDetails($id, $language = null)
     {
+        if (!$this->roomExists($id)) {
+            echo 'Escape room does not exist';
+            return;
+        }
+
         $result = $this->db->selectRoomQuery($id);
 
         if (!$result['success']) {
@@ -268,6 +276,14 @@ class EscapeRoomService
         $room->riddles = $this->riddleService->getAllRiddlesInRoom($room->id, $language);
 
         return $room;
+    }
+
+    private function roomExists($id)
+    {
+        if ($this->db->selectRoomQuery($id)['data']) {
+            return true;
+        }
+        return false;
     }
 }
 ?>

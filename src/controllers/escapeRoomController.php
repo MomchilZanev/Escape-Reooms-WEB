@@ -18,7 +18,7 @@ function getRoomDetails()
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
     } else {
-        echo 'Missing room id';
+        echo 'Missing escape room id';
         return;
     }
     if (isset($_GET['language'])) {
@@ -33,7 +33,7 @@ function getRoomDetails()
 
     $serializationService = new SerializationService();
     if ($export) {
-        $serializationService->exportToJson($result, 'room-export.json');
+        $serializationService->exportToJson($result, 'escape-room-export.json');
     } else {
         header('Content-Type: application/json; charset=UTF-8');
         echo $serializationService->getJson($result);
@@ -56,7 +56,7 @@ function getAllRooms()
 
     $serializationService = new SerializationService();
     if ($export) {
-        $serializationService->exportToJson($result, 'all-rooms-export.json');
+        $serializationService->exportToJson($result, 'all-escape-rooms-export.json');
     } else {
         header('Content-Type: application/json; charset=UTF-8');
         echo $serializationService->getJson($result);
@@ -107,7 +107,7 @@ function filterRooms()
 
     $serializationService = new SerializationService();
     if ($export) {
-        $serializationService->exportToJson($result, 'filtered-rooms-export.json');
+        $serializationService->exportToJson($result, 'filtered-escape-rooms-export.json');
     } else {
         header('Content-Type: application/json; charset=UTF-8');
         echo $serializationService->getJson($result);
@@ -117,7 +117,7 @@ function filterRooms()
 function addRoom()
 {
     if (!isset($_POST['roomJson'])) {
-        echo 'Missing room data';
+        echo 'Missing escape room data';
         return;
     }
 
@@ -128,7 +128,7 @@ function addRoom()
 function updateRoom()
 {
     if (!isset($_POST['roomJson'])) {
-        echo 'Missing room data';
+        echo 'Missing escape room data';
         return;
     }
 
@@ -139,7 +139,7 @@ function updateRoom()
 function translateRoom()
 {
     if (!isset($_POST['roomJson'])) {
-        echo 'Missing room translation data';
+        echo 'Missing escape room translation data';
         return;
     }
 
@@ -153,7 +153,7 @@ function deleteRoom()
     if (isset($_POST['id'])) {
         $id = $_POST['id'];
     } else {
-        echo 'Missing room id';
+        echo 'Missing escape room id';
         return;
     }
 

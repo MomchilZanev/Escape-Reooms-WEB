@@ -1,7 +1,4 @@
 <?php
-
-// TODO: Add options from config file about file formatting (prettyfy/minify).
-
 class SerializationService
 {
     public function getJson($object)
@@ -22,11 +19,10 @@ class SerializationService
             return false;
         }
 
-        header("Content-Type: application/json; charset=UTF-8");
-        header("Content-Disposition: attachment; filename=\"$fileName\"");
+        header('Content-Type: application/json; charset=UTF-8');
+        header('Content-Disposition: attachment; filename=' . $fileName);
 
         echo $json;
     }
 }
-
 ?>

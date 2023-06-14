@@ -36,7 +36,7 @@ class Database
 
     public function __construct()
     {
-        $config = parse_ini_file(__DIR__ . "/../../config/config.ini", true);
+        $config = parse_ini_file(__DIR__ . '/../../config/config.ini', true);
 
         $type = $config['db']['dbType'];
         $host = $config['db']['host'];
@@ -55,148 +55,148 @@ class Database
                 "$type:host=$host;dbname=$name;port=$port",
                 $user,
                 $password,
-                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+                array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
             );
 
             $this->prepareStatements();
         } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
+            echo 'Connection failed: ' . $e->getMessage();
         }
     }
 
     private function prepareStatements()
     {
 
-        $sql = "INSERT INTO `escapeRoom`
+        $sql = 'INSERT INTO `escapeRoom`
                     (`difficulty`, `timeLimit`, `minPlayers`, `maxPlayers`, `image`) 
                 VALUES 
-                    (:difficulty, :timeLimit, :minPlayers, :maxPlayers, :image)";
+                    (:difficulty, :timeLimit, :minPlayers, :maxPlayers, :image)';
         $this->insertRoom = $this->connection->prepare($sql);
 
-        $sql = "INSERT INTO `escapeRoomTranslation`
+        $sql = 'INSERT INTO `escapeRoomTranslation`
                     (`roomId`, `language`, `name`) 
                 VALUES 
-                    (:roomId, :language, :name)";
+                    (:roomId, :language, :name)';
         $this->insertRoomTranslation = $this->connection->prepare($sql);
 
-        $sql = "INSERT INTO `riddle`
+        $sql = 'INSERT INTO `riddle`
                     (`type`, `image`) 
                 VALUES 
-                    (:type, :image)";
+                    (:type, :image)';
         $this->insertRiddle = $this->connection->prepare($sql);
 
-        $sql = "INSERT INTO `riddleTranslation`
+        $sql = 'INSERT INTO `riddleTranslation`
                     (`riddleId`, `language`, `task`, `solution`) 
                 VALUES 
-                    (:riddleId, :language, :task, :solution)";
+                    (:riddleId, :language, :task, :solution)';
         $this->insertRiddleTranslation = $this->connection->prepare($sql);
 
-        $sql = "INSERT INTO roomRiddle
+        $sql = 'INSERT INTO roomRiddle
                     (roomId, riddleId)
                 VALUES 
-                    (:roomId, :riddleId)";
+                    (:roomId, :riddleId)';
         $this->insertRoomRiddle = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM escapeRoom 
-                WHERE id = :id";
+        $sql = 'SELECT * FROM escapeRoom 
+                WHERE id = :id';
         $this->selectRoom = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM escapeRoomTranslation 
-                WHERE roomId = :roomId AND language = :language";
+        $sql = 'SELECT * FROM escapeRoomTranslation 
+                WHERE roomId = :roomId AND language = :language';
         $this->selectRoomTranslation = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM riddle
-                WHERE id = :id";
+        $sql = 'SELECT * FROM riddle
+                WHERE id = :id';
         $this->selectRiddle = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM riddleTranslation 
-                WHERE riddleId = :riddleId AND language = :language";
+        $sql = 'SELECT * FROM riddleTranslation 
+                WHERE riddleId = :riddleId AND language = :language';
         $this->selectRiddleTranslation = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM roomRiddle 
-                WHERE roomId = :roomId";
+        $sql = 'SELECT * FROM roomRiddle 
+                WHERE roomId = :roomId';
         $this->selectRoomRiddlesByRoom = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM roomRiddle 
-                WHERE riddleId = :riddleId";
+        $sql = 'SELECT * FROM roomRiddle 
+                WHERE riddleId = :riddleId';
         $this->selectRoomRiddlesByRiddle = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM escapeRoom";
+        $sql = 'SELECT * FROM escapeRoom';
         $this->selectRooms = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM escapeRoomTranslation
-                WHERE roomId = :roomId";
+        $sql = 'SELECT * FROM escapeRoomTranslation
+                WHERE roomId = :roomId';
         $this->selectRoomTranslations = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM riddle";
+        $sql = 'SELECT * FROM riddle';
         $this->selectRiddles = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM riddleTranslation
-                WHERE riddleId = :riddleId";
+        $sql = 'SELECT * FROM riddleTranslation
+                WHERE riddleId = :riddleId';
         $this->selectRiddleTranslations = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM roomRiddle";
+        $sql = 'SELECT * FROM roomRiddle';
         $this->selectRoomRiddles = $this->connection->prepare($sql);
 
-        $sql = "SELECT * FROM escapeRoom AS er
+        $sql = 'SELECT * FROM escapeRoom AS er
                 INNER JOIN escapeRoomTranslation AS ert ON er.id = ert.roomId 
                 WHERE (:language IS NULL OR ert.language = :language)
-                AND (:name IS NULL OR LOWER(ert.name) LIKE LOWER(CONCAT('%', :name, '%')))
+                AND (:name IS NULL OR LOWER(ert.name) LIKE LOWER(CONCAT("%", :name, "%")))
                 AND (:minDifficulty IS NULL OR er.difficulty >= :minDifficulty)
                 AND (:maxDifficulty IS NULL OR er.difficulty <= :maxDifficulty)
                 AND (:minTimeLimit IS NULL OR er.timeLimit >= :minTimeLimit)
                 AND (:maxTimeLimit IS NULL OR er.timeLimit <= :maxTimeLimit)
                 AND (:minPlayers IS NULL OR er.minPlayers >= :minPlayers)
-                AND (:maxPlayers IS NULL OR er.maxPlayers <= :maxPlayers)";
+                AND (:maxPlayers IS NULL OR er.maxPlayers <= :maxPlayers)';
         $this->selectRoomsWhere = $this->connection->prepare($sql);
 
-        $sql = "UPDATE escapeRoom
+        $sql = 'UPDATE escapeRoom
                 SET 
                     difficulty = :difficulty,
                     timeLimit = :timeLimit,
                     minPlayers = :minPlayers,
                     maxPlayers = :maxPlayers,
                     image = :image
-                WHERE id = :id";
+                WHERE id = :id';
         $this->updateRoom = $this->connection->prepare($sql);
 
-        $sql = "UPDATE escapeRoomTranslation
+        $sql = 'UPDATE escapeRoomTranslation
                 SET name = :name
-                WHERE roomId = :roomId AND language = :language";
+                WHERE roomId = :roomId AND language = :language';
         $this->updateRoomTranslation = $this->connection->prepare($sql);
 
-        $sql = "UPDATE riddle
+        $sql = 'UPDATE riddle
                 SET 
                     type = :type,
                     image = :image
-                WHERE id = :id";
+                WHERE id = :id';
         $this->updateRiddle = $this->connection->prepare($sql);
 
-        $sql = "UPDATE riddleTranslation
+        $sql = 'UPDATE riddleTranslation
                 SET 
                     task = :task,
                     solution = :solution
-                WHERE riddleId = :riddleId AND language = :language";
+                WHERE riddleId = :riddleId AND language = :language';
         $this->updateRiddleTranslation = $this->connection->prepare($sql);
 
-        $sql = "DELETE FROM escapeRoom
-                WHERE id = :id";
+        $sql = 'DELETE FROM escapeRoom
+                WHERE id = :id';
         $this->deleteRoom = $this->connection->prepare($sql);
 
-        $sql = "DELETE FROM escapeRoomTranslation
-                WHERE roomId = :roomId AND language = :language";
+        $sql = 'DELETE FROM escapeRoomTranslation
+                WHERE roomId = :roomId AND language = :language';
         $this->deleteRoomTranslation = $this->connection->prepare($sql);
 
-        $sql = "DELETE FROM riddle
-                WHERE id = :id";
+        $sql = 'DELETE FROM riddle
+                WHERE id = :id';
         $this->deleteRiddle = $this->connection->prepare($sql);
 
-        $sql = "DELETE FROM riddleTranslation
-                WHERE riddleId = :riddleId AND language = :language";
+        $sql = 'DELETE FROM riddleTranslation
+                WHERE riddleId = :riddleId AND language = :language';
         $this->deleteRiddleTranslation = $this->connection->prepare($sql);
 
-        $sql = "DELETE FROM roomRiddle
-                WHERE roomId = :roomId AND riddleId = :riddleId";
+        $sql = 'DELETE FROM roomRiddle
+                WHERE roomId = :roomId AND riddleId = :riddleId';
         $this->deleteRoomRiddle = $this->connection->prepare($sql);
     }
 
@@ -211,14 +211,14 @@ class Database
                 'image' => $image
             ]);
 
-            $sql = "SELECT MAX(id) FROM escapeRoom";
-            $query = $this->connection->query($sql) or die("failed!");
+            $sql = 'SELECT MAX(id) FROM escapeRoom';
+            $query = $this->connection->query($sql) or die('failed!');
             $result = $query->fetch();
 
-            return ["success" => true, "id" => $result[0]];
+            return ['success' => true, 'id' => $result[0]];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -231,10 +231,10 @@ class Database
                 'name' => $name,
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -246,14 +246,14 @@ class Database
                 'image' => $image
             ]);
 
-            $sql = "SELECT MAX(id) FROM riddle";
-            $query = $this->connection->query($sql) or die("failed!");
+            $sql = 'SELECT MAX(id) FROM riddle';
+            $query = $this->connection->query($sql) or die('failed!');
             $result = $query->fetch();
 
-            return ["success" => true, "id" => $result[0]];
+            return ['success' => true, 'id' => $result[0]];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -267,28 +267,28 @@ class Database
                 'solution' => $solution
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
     public function insertRoomRiddleQuery($roomId, $riddleId)
     {
         try {
-            if (!$this->selectRoomQuery($roomId)["data"] or !$this->selectRiddleQuery($riddleId)["data"]) {
-                return ["success" => false, "error" => "To insert a roomRiddle, you need to specify valid escapeRoom and riddle ids."];
+            if (!$this->selectRoomQuery($roomId)['data'] or !$this->selectRiddleQuery($riddleId)['data']) {
+                return ['success' => false, 'error' => 'To insert a roomRiddle, you need to specify valid escapeRoom and riddle ids.'];
             }
 
             $this->insertRoomRiddle->execute([
                 'roomId' => $roomId,
                 'riddleId' => $riddleId,
             ]);
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -298,10 +298,10 @@ class Database
             $this->selectRoom->execute(['id' => $id]);
             $result = $this->selectRoom->fetch();
 
-            return ["success" => true, "data" => $result];
+            return ['success' => true, 'data' => $result];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -314,10 +314,10 @@ class Database
             ]);
             $result = $this->selectRoomTranslation->fetch();
 
-            return ["success" => true, "data" => $result];
+            return ['success' => true, 'data' => $result];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -327,10 +327,10 @@ class Database
             $this->selectRiddle->execute(['id' => $id]);
             $result = $this->selectRiddle->fetch();
 
-            return ["success" => true, "data" => $result];
+            return ['success' => true, 'data' => $result];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -343,10 +343,10 @@ class Database
             ]);
             $result = $this->selectRiddleTranslation->fetch();
 
-            return ["success" => true, "data" => $result];
+            return ['success' => true, 'data' => $result];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -354,21 +354,21 @@ class Database
     {
         try {
             $riddles = array();
-            $riddleIds = array_column($this->selectRoomRiddlesByRoomQuery($roomId)["data"], 'riddleId');
+            $riddleIds = array_column($this->selectRoomRiddlesByRoomQuery($roomId)['data'], 'riddleId');
 
             foreach ($riddleIds as $riddleId) {
-                array_push($riddles, $this->selectRiddleQuery($riddleId)["data"]);
+                array_push($riddles, $this->selectRiddleQuery($riddleId)['data']);
             }
 
             if ($riddles === NULL) {
-                return ["success" => false, "error" => "No riddles in the room"];
+                return ['success' => false, 'error' => 'No riddles in the room'];
             }
 
-            return ["success" => true, "data" => $riddles];
+            return ['success' => true, 'data' => $riddles];
 
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -378,10 +378,10 @@ class Database
             $this->selectRoomRiddlesByRoom->execute(['roomId' => $roomId]);
             $result = $this->selectRoomRiddlesByRoom->fetchAll(); # fetch, fetchColumn
 
-            return ["success" => true, "data" => $result];
+            return ['success' => true, 'data' => $result];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -391,10 +391,10 @@ class Database
             $this->selectRoomRiddlesByRiddle->execute(['riddleId' => $riddleId]);
             $result = $this->selectRoomRiddlesByRiddle->fetchAll();
 
-            return ["success" => true, "data" => $result];
+            return ['success' => true, 'data' => $result];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -402,10 +402,10 @@ class Database
     {
         try {
             $this->selectRooms->execute();
-            return ["success" => true, "data" => $this->selectRooms->fetchAll()];
+            return ['success' => true, 'data' => $this->selectRooms->fetchAll()];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -415,10 +415,10 @@ class Database
             $this->selectRoomTranslations->execute([
                 'roomId' => $roomId
             ]);
-            return ["success" => true, "data" => $this->selectRoomTranslations->fetchAll()];
+            return ['success' => true, 'data' => $this->selectRoomTranslations->fetchAll()];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -426,10 +426,10 @@ class Database
     {
         try {
             $this->selectRiddles->execute();
-            return ["success" => true, "data" => $this->selectRiddles->fetchAll()];
+            return ['success' => true, 'data' => $this->selectRiddles->fetchAll()];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -439,10 +439,10 @@ class Database
             $this->selectRiddleTranslations->execute([
                 'riddleId' => $riddleId
             ]);
-            return ["success" => true, "data" => $this->selectRiddleTranslations->fetchAll()];
+            return ['success' => true, 'data' => $this->selectRiddleTranslations->fetchAll()];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -450,10 +450,10 @@ class Database
     {
         try {
             $this->selectRoomRiddles->execute();
-            return ["success" => true, "data" => $this->selectRoomRiddles->fetchAll()];
+            return ['success' => true, 'data' => $this->selectRoomRiddles->fetchAll()];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -479,10 +479,10 @@ class Database
                 'maxPlayers' => $maxPlayers,
             ]);
 
-            return ["success" => true, "data" => $this->selectRoomsWhere->fetchAll()];
+            return ['success' => true, 'data' => $this->selectRoomsWhere->fetchAll()];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -498,10 +498,10 @@ class Database
                 'image' => $image
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -514,10 +514,10 @@ class Database
                 'name' => $name
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -530,10 +530,10 @@ class Database
                 'image' => $image
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -547,10 +547,10 @@ class Database
                 'solution' => $solution
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -561,10 +561,10 @@ class Database
                 'id' => $id,
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -576,10 +576,10 @@ class Database
                 'language' => $language
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -590,10 +590,10 @@ class Database
                 'id' => $id,
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -605,10 +605,10 @@ class Database
                 'language' => $language
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 
@@ -620,10 +620,10 @@ class Database
                 'riddleId' => $riddleId
             ]);
 
-            return ["success" => true];
+            return ['success' => true];
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            return ["success" => false, "error" => "Connection failed: " . $e->getMessage()];
+            return ['success' => false, 'error' => 'Connection failed: ' . $e->getMessage()];
         }
     }
 

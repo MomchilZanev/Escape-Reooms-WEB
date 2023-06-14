@@ -12,7 +12,7 @@ class EscapeRoom
     public $riddles;
 
 
-    public function __construct($id = null, $name = null, $language = "en", $difficulty = 1, $timeLimit = 60, $minPlayers = 1, $maxPlayers = 10, $image = null)
+    public function __construct($id = null, $name = null, $language = 'en', $difficulty = 1, $timeLimit = 60, $minPlayers = 1, $maxPlayers = 10, $image = null)
     {
         $this->id = $id;
         $this->name = $name;

@@ -1,7 +1,7 @@
 <?php
-require_once(__DIR__ . "/../data/db.php");
-require_once(__DIR__ . "/../models/riddle.php");
-require_once(__DIR__ . "/./serializationService.php");
+require_once(__DIR__ . '/../data/db.php');
+require_once(__DIR__ . '/../models/riddle.php');
+require_once(__DIR__ . '/./serializationService.php');
 
 class RiddleService
 {
@@ -18,7 +18,7 @@ class RiddleService
     {
         $object = $this->serializationService->getObject($jsonContents);
         if ($object == null) {
-            echo "Invalid JSON file.";
+            echo 'Invalid JSON contents';
             return false;
         }
 
@@ -56,6 +56,11 @@ class RiddleService
 
     public function addRoomRiddle($roomId, $riddleId)
     {
+        if (!$this->roomExists($roomId) or !$this->riddleExists($riddleId)) {
+            echo 'Riddle and/or escape room does not exist';
+            return;
+        }
+
         $result = $this->db->insertRoomRiddleQuery($roomId, $riddleId);
 
         return $result['success'];
@@ -63,16 +68,21 @@ class RiddleService
 
     public function deleteRoomRiddle($roomId, $riddleId)
     {
+        if (!$this->roomExists($roomId) or !$this->riddleExists($riddleId)) {
+            echo 'Riddle and/or escape room does not exist';
+            return;
+        }
+
         $result = $this->db->deleteRoomRiddleQuery($roomId, $riddleId);
 
         return $result['success'];
     }
 
-    public function addRiddleJson($riddleJson) 
+    public function addRiddleJson($riddleJson)
     {
         $object = $this->serializationService->getObject($riddleJson);
         if ($object == null) {
-            echo "Invalid riddle data.";
+            echo 'Invalid riddle data';
             return false;
         }
 
@@ -88,7 +98,7 @@ class RiddleService
         return $this->addRiddle($riddle);
     }
 
-    public function addRiddle($riddle)
+    private function addRiddle($riddle)
     {
         $result = $this->db->insertRiddleQuery(
             $riddle->type,
@@ -109,11 +119,11 @@ class RiddleService
         return $result['success'];
     }
 
-    public function updateRiddleJson($riddleJson) 
+    public function updateRiddleJson($riddleJson)
     {
         $object = $this->serializationService->getObject($riddleJson);
         if ($object == null) {
-            echo "Invalid riddle data.";
+            echo 'Invalid riddle data';
             return false;
         }
 
@@ -129,10 +139,11 @@ class RiddleService
         return $this->updateRiddle($riddle);
     }
 
-    public function updateRiddle($riddle)
+    private function updateRiddle($riddle)
     {
-        if (is_null($riddle->id)) {
-            return $this->addRiddle($riddle);
+        if (!$this->riddleExists($riddle->id)) {
+            echo 'Riddle does not exist';
+            return;
         }
 
         $result = $this->db->updateRiddleQuery(
@@ -164,11 +175,11 @@ class RiddleService
         return $result['success'];
     }
 
-    public function translateRiddleJson($riddleJson) 
+    public function translateRiddleJson($riddleJson)
     {
         $object = $this->serializationService->getObject($riddleJson);
         if ($object == null) {
-            echo "Invalid riddle translation data.";
+            echo 'Invalid riddle translation data';
             return false;
         }
 
@@ -183,10 +194,11 @@ class RiddleService
         return $this->translateRiddle($riddle);
     }
 
-    public function translateRiddle($riddle)
+    private function translateRiddle($riddle)
     {
-        if (is_null($riddle->id)) {
-            return false;
+        if (!$this->riddleExists($riddle->id)) {
+            echo 'Riddle does not exist';
+            return;
         }
 
         $translation = $this->db->selectRiddleTranslationQuery($riddle->id, $riddle->language)['data'];
@@ -212,8 +224,9 @@ class RiddleService
 
     public function deleteRiddle($id)
     {
-        if (is_null($id)) {
-            return false;
+        if (!$this->riddleExists($id)) {
+            echo 'Riddle does not exist';
+            return;
         }
 
         $result = $this->db->deleteRiddleQuery($id);
@@ -223,6 +236,11 @@ class RiddleService
 
     public function getRiddleDetails($id, $language)
     {
+        if (!$this->riddleExists($id)) {
+            echo 'Riddle does not exist';
+            return;
+        }
+
         $result = $this->db->selectRiddleQuery($id);
 
         if (!$result['success']) {
@@ -234,8 +252,7 @@ class RiddleService
 
     public function getAllRiddles($language)
     {
-        $db = new Database();
-        $result = $db->selectRiddlesQuery();
+        $result = $this->db->selectRiddlesQuery();
 
         if (!$result['success']) {
             return null;
@@ -246,8 +263,12 @@ class RiddleService
 
     public function getAllRiddlesInRoom($roomId, $language)
     {
-        $db = new Database();
-        $result = $db->selectRiddlesInRoomQuery($roomId);
+        if (!$this->roomExists($roomId)) {
+            echo 'Escape room does not exist';
+            return;
+        }
+
+        $result = $this->db->selectRiddlesInRoomQuery($roomId);
 
         if (!$result['success']) {
             return null;
@@ -288,6 +309,22 @@ class RiddleService
         );
 
         return $riddle;
+    }
+
+    private function riddleExists($id)
+    {
+        if ($this->db->selectRiddleQuery($id)['data']) {
+            return true;
+        }
+        return false;
+    }
+
+    private function roomExists($id)
+    {
+        if ($this->db->selectRoomQuery($id)['data']) {
+            return true;
+        }
+        return false;
     }
 }
 ?>

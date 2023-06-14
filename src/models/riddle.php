@@ -8,7 +8,7 @@ class Riddle
     public $solution;
     public $image;
 
-    public function __construct($id = null, $type = "other", $language = "en", $task = null, $solution = null, $image = null)
+    public function __construct($id = null, $type = 'other', $language = 'en', $task = null, $solution = null, $image = null)
     {
         $this->id = $id;
         $this->type = $type;
