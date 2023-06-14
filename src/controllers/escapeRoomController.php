@@ -24,6 +24,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 function serveRequest($method, $action)
 {
     switch ($action) {
+        case "getRoomDetails":
+            if ($method != "GET") {
+                echo 'Invalid method or action.';
+                return;
+            }
+
+            getRoomDetails();
+            break;
         case "getAllRooms":
             if ($method != "GET") {
                 echo 'Invalid method or action.';
@@ -39,6 +47,50 @@ function serveRequest($method, $action)
             }
 
             filterRooms();
+            break;
+        case "addRoom":
+            if ($method != "POST") {
+                echo 'Invalid method or action.';
+                return;
+            }
+            if (!isset($_POST["roomJson"])) {
+                echo 'Missing room data.';
+                return;
+            }
+
+            addRoom();
+            break;
+        case "updateRoom":
+            if ($method != "POST") {
+                echo 'Invalid method or action.';
+                return;
+            }
+            if (!isset($_POST["roomJson"])) {
+                echo 'Missing room data.';
+                return;
+            }
+
+            updateRoom();
+            break;
+        case "translateRoom":
+            if ($method != "POST") {
+                echo 'Invalid method or action.';
+                return;
+            }
+            if (!isset($_POST["roomJson"])) {
+                echo 'Missing translation data.';
+                return;
+            }
+
+            translateRoom();
+            break;
+        case "deleteRoom":
+            if ($method != "POST") {
+                echo 'Invalid method or action.';
+                return;
+            }
+
+            deleteRoom();
             break;
         case "importFromJson":
             if ($method != "POST") {
@@ -57,6 +109,33 @@ function serveRequest($method, $action)
     }
 }
 
+function getRoomDetails()
+{
+    $id = null;
+    $language = null;
+    $export = null;
+    if (isset($_GET["id"])) {
+        $id = $_GET["id"];
+    }
+    if (isset($_GET["language"])) {
+        $language = $_GET["language"];
+    }
+    if (isset($_GET["export"])) {
+        $export = filter_var($_GET["export"], FILTER_VALIDATE_BOOLEAN);
+    }
+
+    $escapeRoomService = new EscapeRoomService();
+    $result = $escapeRoomService->getRoomDetails($id, $language);
+
+    $serializationService = new SerializationService();
+    if ($export) {
+        $serializationService->exportToJson($result, "room-export.json");
+    } else {
+        header('Content-Type: application/json; charset=UTF-8');
+        echo $serializationService->getJson($result);
+    }
+}
+
 function getAllRooms()
 {
     $language = null;
@@ -71,12 +150,12 @@ function getAllRooms()
     $escapeRoomService = new EscapeRoomService();
     $result = $escapeRoomService->getAllRooms($language);
 
+    $serializationService = new SerializationService();
     if ($export) {
-        $serializationService = new SerializationService();
         $serializationService->exportToJson($result, "all-rooms-export.json");
     } else {
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($result);
+        echo $serializationService->getJson($result);
     }
 }
 
@@ -122,13 +201,42 @@ function filterRooms()
     $escapeRoomService = new EscapeRoomService();
     $result = $escapeRoomService->filterRooms($language, $name, $minDifficulty, $maxDifficulty, $minTimeLimit, $maxTimeLimit, $minPlayers, $maxPlayers);
 
+    $serializationService = new SerializationService();
     if ($export) {
-        $serializationService = new SerializationService();
         $serializationService->exportToJson($result, "filtered-rooms-export.json");
     } else {
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($result);
+        echo $serializationService->getJson($result);
     }
+}
+
+function addRoom()
+{
+    $escapeRoomService = new EscapeRoomService();
+    $escapeRoomService->addRoomJson($_POST["roomJson"]);
+}
+
+function updateRoom()
+{
+    $escapeRoomService = new EscapeRoomService();
+    $escapeRoomService->updateRoomJson($_POST["roomJson"]);
+}
+
+function translateRoom()
+{
+    $escapeRoomService = new EscapeRoomService();
+    $escapeRoomService->translateRoomJson($_POST["roomJson"]);
+}
+
+function deleteRoom()
+{
+    $id = null;
+    if (isset($_POST["id"])) {
+        $id = $_POST["id"];
+    }
+
+    $escapeRoomService = new EscapeRoomService();
+    $escapeRoomService->deleteRoom($id);
 }
 
 function importFromJson()

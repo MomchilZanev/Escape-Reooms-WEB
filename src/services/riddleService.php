@@ -34,11 +34,11 @@ class RiddleService
         foreach ($object as $item) {
             $riddle = new Riddle(
                 null,
-                $item->type,
-                $item->language,
-                $item->task,
-                $item->solution,
-                $item->image
+                $item['type'],
+                $item['language'],
+                $item['task'],
+                $item['solution'],
+                $item['image']
             );
             if (!$this->addRiddle($riddle)) {
                 return false;
@@ -61,6 +61,33 @@ class RiddleService
         return $result['success'];
     }
 
+    public function deleteRoomRiddle($roomId, $riddleId)
+    {
+        $result = $this->db->deleteRoomRiddleQuery($roomId, $riddleId);
+
+        return $result['success'];
+    }
+
+    public function addRiddleJson($riddleJson) 
+    {
+        $object = $this->serializationService->getObject($riddleJson);
+        if ($object == null) {
+            echo "Invalid riddle data.";
+            return false;
+        }
+
+        $riddle = new Riddle(
+            null,
+            $object['type'],
+            $object['language'],
+            $object['task'],
+            $object['solution'],
+            $object['image']
+        );
+
+        return $this->addRiddle($riddle);
+    }
+
     public function addRiddle($riddle)
     {
         $result = $this->db->insertRiddleQuery(
@@ -80,6 +107,26 @@ class RiddleService
         }
 
         return $result['success'];
+    }
+
+    public function updateRiddleJson($riddleJson) 
+    {
+        $object = $this->serializationService->getObject($riddleJson);
+        if ($object == null) {
+            echo "Invalid riddle data.";
+            return false;
+        }
+
+        $riddle = new Riddle(
+            $object['id'],
+            $object['type'],
+            $object['language'],
+            $object['task'],
+            $object['solution'],
+            $object['image']
+        );
+
+        return $this->updateRiddle($riddle);
     }
 
     public function updateRiddle($riddle)
@@ -117,15 +164,72 @@ class RiddleService
         return $result['success'];
     }
 
-    public function deleteRiddle($riddleId)
+    public function translateRiddleJson($riddleJson) 
     {
-        if (is_null($riddleId)) {
+        $object = $this->serializationService->getObject($riddleJson);
+        if ($object == null) {
+            echo "Invalid riddle translation data.";
             return false;
         }
 
-        $result = $this->db->deleteRiddleQuery($riddleId);
+        $riddle = new Riddle(
+            $object['id'],
+            null,
+            $object['language'],
+            $object['task'],
+            $object['solution']
+        );
+
+        return $this->translateRiddle($riddle);
+    }
+
+    public function translateRiddle($riddle)
+    {
+        if (is_null($riddle->id)) {
+            return false;
+        }
+
+        $translation = $this->db->selectRiddleTranslationQuery($riddle->id, $riddle->language)['data'];
+
+        if ($translation) {
+            $result = $this->db->updateRiddleTranslationQuery(
+                $riddle->id,
+                $riddle->language,
+                $riddle->task,
+                $riddle->solution,
+            );
+            return $result['success'];
+        } else {
+            $result = $this->db->insertRiddleTranslationQuery(
+                $riddle->id,
+                $riddle->language,
+                $riddle->task,
+                $riddle->solution,
+            );
+            return $result['success'];
+        }
+    }
+
+    public function deleteRiddle($id)
+    {
+        if (is_null($id)) {
+            return false;
+        }
+
+        $result = $this->db->deleteRiddleQuery($id);
 
         return $result['success'];
+    }
+
+    public function getRiddleDetails($id, $language)
+    {
+        $result = $this->db->selectRiddleQuery($id);
+
+        if (!$result['success']) {
+            return null;
+        }
+
+        return $this->dbRecordToRiddle($result['data'], $language);
     }
 
     public function getAllRiddles($language)
@@ -137,7 +241,7 @@ class RiddleService
             return null;
         }
 
-        return $this->dbResultToArrayOfRiddles($result, $language);
+        return $this->dbResultSetToArrayOfRiddles($result, $language);
     }
 
     public function getAllRiddlesInRoom($roomId, $language)
@@ -149,31 +253,41 @@ class RiddleService
             return null;
         }
 
-        return $this->dbResultToArrayOfRiddles($result, $language);
+        return $this->dbResultSetToArrayOfRiddles($result, $language);
     }
 
-    private function dbResultToArrayOfRiddles($dbResult, $language)
+    private function dbResultSetToArrayOfRiddles($dbResult, $language)
     {
         $riddles = array();
-        foreach ($dbResult['data'] as $record) {
-            $translation = $this->db->selectRiddleTranslationQuery($record['id'], $language)['data'];
-
-            if (!$translation) {
-                $translation = $this->db->selectRiddleTranslationsQuery($record['id'])['data'][0];
-            }
-
-            $riddle = new Riddle(
-                $record['id'],
-                $record['type'],
-                $translation['language'],
-                $translation['task'],
-                $translation['solution'],
-                $record['image']
-            );
+        foreach ($dbResult['data'] as $dbRecord) {
+            $riddle = $this->dbRecordToRiddle($dbRecord, $language);
             array_push($riddles, $riddle);
         }
 
         return $riddles;
+    }
+
+    private function dbRecordToRiddle($dbRecord, $language = null)
+    {
+        $translation = null;
+        if (!is_null($language)) {
+            $translation = $this->db->selectRiddleTranslationQuery($dbRecord['id'], $language)['data'];
+        }
+
+        if (!$translation) {
+            $translation = $this->db->selectRiddleTranslationsQuery($dbRecord['id'])['data'][0];
+        }
+
+        $riddle = new Riddle(
+            $dbRecord['id'],
+            $dbRecord['type'],
+            $translation['language'],
+            $translation['task'],
+            $translation['solution'],
+            $dbRecord['image']
+        );
+
+        return $riddle;
     }
 }
 ?>

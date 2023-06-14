@@ -38,8 +38,8 @@ function testInsertRiddleQuery()
         return;
     }
 
-    $riddleId = $result['id'] . "<br/>";
-    $db->insertRiddleTranslationQuery($riddleId, $language, $task, $solution);
+    $id = $result['id'] . "<br/>";
+    $db->insertRiddleTranslationQuery($id, $language, $task, $solution);
 }
 
 function testInsertRoomRiddleQuery()

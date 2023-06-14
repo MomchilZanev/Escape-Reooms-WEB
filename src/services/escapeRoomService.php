@@ -21,7 +21,7 @@ class EscapeRoomService
     {
         $object = $this->serializationService->getObject($jsonContents);
         if ($object == null) {
-            echo "Invalid JSON file.";
+            echo "Invalid import JSON.";
             return false;
         }
 
@@ -37,25 +37,47 @@ class EscapeRoomService
         foreach ($object as $item) {
             $room = new EscapeRoom(
                 null,
-                $item->name,
-                $item->language,
-                $item->difficulty,
-                $item->timeLimit,
-                $item->minPlayers,
-                $item->maxPlayers,
-                $item->image
+                $item['name'],
+                $item['language'],
+                $item['difficulty'],
+                $item['timeLimit'],
+                $item['minPlayers'],
+                $item['maxPlayers'],
+                $item['image']
             );
             if (!$this->addRoom($room)) {
                 return false;
             }
 
-            $riddles = $item->riddles;
+            $riddles = $item['riddles'];
             if ($riddles) {
                 if (!$this->riddleService->importFromObj($riddles, $room->id)) {
                     return false;
                 }
             }
         }
+    }
+
+    public function addRoomJson($roomJson) 
+    {
+        $object = $this->serializationService->getObject($roomJson);
+        if ($object == null) {
+            echo "Invalid room data.";
+            return false;
+        }
+
+        $room = new EscapeRoom(
+            null,
+            $object['name'],
+            $object['language'],
+            $object['difficulty'],
+            $object['timeLimit'],
+            $object['minPlayers'],
+            $object['maxPlayers'],
+            $object['image']
+        );
+
+        return $this->addRoom($room);
     }
 
     public function addRoom($room)
@@ -81,10 +103,32 @@ class EscapeRoomService
         return $result['success'];
     }
 
+    public function updateRoomJson($roomJson) 
+    {
+        $object = $this->serializationService->getObject($roomJson);
+        if ($object == null) {
+            echo "Invalid room data.";
+            return false;
+        }
+
+        $room = new EscapeRoom(
+            $object['id'],
+            $object['name'],
+            $object['language'],
+            $object['difficulty'],
+            $object['timeLimit'],
+            $object['minPlayers'],
+            $object['maxPlayers'],
+            $object['image']
+        );
+
+        return $this->updateRoom($room);
+    }
+
     public function updateRoom($room)
     {
         if (is_null($room->id)) {
-            return $this->addRoom($room);
+            return false;
         }
 
         $result = $this->db->updateRoomQuery(
@@ -97,35 +141,74 @@ class EscapeRoomService
         );
 
         if ($result['success']) {
-            $translation = $this->db->selectRoomTranslationQuery($room->id, $room->language)['data'];
-
-            if ($translation) {
-                $result = $this->db->updateRoomTranslationQuery(
-                    $room->id,
-                    $room->language,
-                    $room->name
-                );
-            } else {
-                $result = $this->db->insertRoomTranslationQuery(
-                    $room->id,
-                    $room->language,
-                    $room->name
-                );
-            }
+            return $this->translateRoom($room);
         }
+
+        return false;
+    }
+
+    public function translateRoomJson($roomJson) 
+    {
+        $object = $this->serializationService->getObject($roomJson);
+        if ($object == null) {
+            echo "Invalid room translation data.";
+            return false;
+        }
+
+        $room = new EscapeRoom(
+            $object['id'],
+            $object['name'],
+            $object['language']
+        );
+
+        return $this->translateRoom($room);
+    }
+
+    public function translateRoom($room)
+    {
+        if (is_null($room->id)) {
+            return false;
+        }
+
+        $translation = $this->db->selectRoomTranslationQuery($room->id, $room->language)['data'];
+
+        if ($translation) {
+            $result = $this->db->updateRoomTranslationQuery(
+                $room->id,
+                $room->language,
+                $room->name
+            );
+            return $result['success'];
+        } else {
+            $result = $this->db->insertRoomTranslationQuery(
+                $room->id,
+                $room->language,
+                $room->name
+            );
+            return $result['success'];
+        }
+    }
+
+    public function deleteRoom($id)
+    {
+        if (is_null($id)) {
+            return false;
+        }
+
+        $result = $this->db->deleteRoomQuery($id);
 
         return $result['success'];
     }
 
-    public function deleteRoom($roomId)
+    public function getRoomDetails($id, $language)
     {
-        if (is_null($roomId)) {
-            return false;
+        $result = $this->db->selectRoomQuery($id);
+
+        if (!$result['success']) {
+            return null;
         }
 
-        $result = $this->db->deleteRoomQuery($roomId);
-
-        return $result['success'];
+        return $this->dbRecordToRoom($result['data'], $language);
     }
 
     public function getAllRooms($language = null)
@@ -136,7 +219,7 @@ class EscapeRoomService
             return null;
         }
 
-        return $this->dbResultToArrayOfRooms($result, $language);
+        return $this->dbResultSetToArrayOfRooms($result, $language);
     }
 
     public function filterRooms($language = null, $name = null, $minDifficulty = null, $maxDifficulty = null, $minTimeLimit = null, $maxTimeLimit = null, $minPlayers = null, $maxPlayers = null)
@@ -147,38 +230,44 @@ class EscapeRoomService
             return null;
         }
 
-        return $this->dbResultToArrayOfRooms($result, $language);
+        return $this->dbResultSetToArrayOfRooms($result, $language);
     }
 
-    private function dbResultToArrayOfRooms($dbResult, $language = null)
+    private function dbResultSetToArrayOfRooms($dbResultSet, $language = null)
     {
         $rooms = array();
-        foreach ($dbResult['data'] as $record) {
-            $translation = null;
-            if (!is_null($language)) {
-                $translation = $this->db->selectRoomTranslationQuery($record['id'], $language)['data'];
-            }
-
-            if (!$translation) {
-                $translation = $this->db->selectRoomTranslationsQuery($record['id'])['data'][0];
-            }
-
-            $room = new EscapeRoom(
-                $record['id'],
-                $translation['name'],
-                $translation['language'],
-                $record['difficulty'],
-                $record['timeLimit'],
-                $record['minPlayers'],
-                $record['maxPlayers'],
-                $record['image']
-            );
-            $room->riddles = $this->riddleService->getAllRiddlesInRoom($room->id, $language);
-
+        foreach ($dbResultSet['data'] as $dbRecord) {
+            $room = $this->dbRecordToRoom($dbRecord, $language);
             array_push($rooms, $room);
         }
 
         return $rooms;
+    }
+
+    private function dbRecordToRoom($dbRecord, $language = null)
+    {
+        $translation = null;
+        if (!is_null($language)) {
+            $translation = $this->db->selectRoomTranslationQuery($dbRecord['id'], $language)['data'];
+        }
+
+        if (!$translation) {
+            $translation = $this->db->selectRoomTranslationsQuery($dbRecord['id'])['data'][0];
+        }
+
+        $room = new EscapeRoom(
+            $dbRecord['id'],
+            $translation['name'],
+            $translation['language'],
+            $dbRecord['difficulty'],
+            $dbRecord['timeLimit'],
+            $dbRecord['minPlayers'],
+            $dbRecord['maxPlayers'],
+            $dbRecord['image']
+        );
+        $room->riddles = $this->riddleService->getAllRiddlesInRoom($room->id, $language);
+
+        return $room;
     }
 }
 ?>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Home Page Tests</title>
+    <title>Listing Items Tests</title>
 </head>
 <meta charset="utf-8">
 
@@ -15,6 +15,10 @@
     <button type="button" onclick="testFilterRooms(false)">Test Filter Rooms</button>
     <br />
     <button type="button" onclick="testFilterRooms(true)">Test Filter Rooms Export</button>
+    <br />
+    <button type="button" onclick="testGetAllRiddles(false)">Test Get All Riddles</button>
+    <br />
+    <button type="button" onclick="testGetAllRiddles(true)">Test Get All Riddles Export</button>
     <br />
 
 </body>
@@ -94,6 +98,45 @@
         }
         else {
             fetch(url + new URLSearchParams(searchParams))
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("Error: " + response.status);
+                    }
+                })
+                .then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    }
+
+    function testGetAllRiddles(exportParam = false) {
+        var url = "../src/controllers/riddleController.php?";
+
+        if (exportParam) {
+            fetch(url + new URLSearchParams({ action: "getAllRiddles", language: "en", export: exportParam }))
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error("Error: " + response.status);
+                })
+                .then(function (blob) {
+                    var temp = document.createElement('a');
+                    temp.href = URL.createObjectURL(blob);
+                    temp.download = 'all-riddles-export.json';
+                    temp.click();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        else {
+            fetch(url + new URLSearchParams({ action: "getAllRiddles", language: "en" }))
                 .then(function (response) {
                     if (response.ok) {
                         return response.json();
