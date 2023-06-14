@@ -51,7 +51,7 @@ class EscapeRoomService
 
             $riddles = $item->riddles;
             if ($riddles) {
-                if (!$this->riddleService->importFromObj($riddles, $room->getId())) {
+                if (!$this->riddleService->importFromObj($riddles, $room->id)) {
                     return false;
                 }
             }
@@ -69,10 +69,10 @@ class EscapeRoomService
         );
 
         if ($result['success']) {
-            $room->setId($result['id']);
+            $room->id = $result['id'];
 
             $result = $this->db->insertRoomTranslationQuery(
-                $room->getId(),
+                $room->id,
                 $room->language,
                 $room->name
             );
@@ -83,12 +83,12 @@ class EscapeRoomService
 
     public function updateRoom($room)
     {
-        if (is_null($room->getId())) {
+        if (is_null($room->id)) {
             return $this->addRoom($room);
         }
 
         $result = $this->db->updateRoomQuery(
-            $room->getId(),
+            $room->id,
             $room->difficulty,
             $room->timeLimit,
             $room->minPlayers,
@@ -97,17 +97,17 @@ class EscapeRoomService
         );
 
         if ($result['success']) {
-            $translation = $this->db->selectRoomTranslationQuery($room->getId(), $room->language)['data'];
+            $translation = $this->db->selectRoomTranslationQuery($room->id, $room->language)['data'];
 
             if ($translation) {
                 $result = $this->db->updateRoomTranslationQuery(
-                    $room->getId(),
+                    $room->id,
                     $room->language,
                     $room->name
                 );
             } else {
                 $result = $this->db->insertRoomTranslationQuery(
-                    $room->getId(),
+                    $room->id,
                     $room->language,
                     $room->name
                 );
@@ -173,7 +173,7 @@ class EscapeRoomService
                 $record['maxPlayers'],
                 $record['image']
             );
-            $room->riddles = $this->riddleService->getAllRiddlesInRoom($room->getId(), $language);
+            $room->riddles = $this->riddleService->getAllRiddlesInRoom($room->id, $language);
 
             array_push($rooms, $room);
         }

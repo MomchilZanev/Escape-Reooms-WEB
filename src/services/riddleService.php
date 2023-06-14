@@ -45,7 +45,7 @@ class RiddleService
             }
 
             if ($roomId) {
-                if (!$this->addRoomRiddle($roomId, $riddle->getId())) {
+                if (!$this->addRoomRiddle($roomId, $riddle->id)) {
                     return false;
                 }
             }
@@ -69,10 +69,10 @@ class RiddleService
         );
 
         if ($result['success']) {
-            $riddle->setId($result['id']);
+            $riddle->id = $result['id'];
 
             $result = $this->db->insertRiddleTranslationQuery(
-                $riddle->getId(),
+                $riddle->id,
                 $riddle->language,
                 $riddle->task,
                 $riddle->solution
@@ -84,29 +84,29 @@ class RiddleService
 
     public function updateRiddle($riddle)
     {
-        if (is_null($riddle->getId())) {
+        if (is_null($riddle->id)) {
             return $this->addRiddle($riddle);
         }
 
         $result = $this->db->updateRiddleQuery(
-            $riddle->getId(),
+            $riddle->id,
             $riddle->type,
             $riddle->image
         );
 
         if ($result['success']) {
-            $translation = $this->db->selectRiddleTranslationQuery($riddle->getId(), $riddle->language)['data'];
+            $translation = $this->db->selectRiddleTranslationQuery($riddle->id, $riddle->language)['data'];
 
             if ($translation) {
                 $result = $this->db->updateRiddleTranslationQuery(
-                    $riddle->getId(),
+                    $riddle->id,
                     $riddle->language,
                     $riddle->task,
                     $riddle->solution
                 );
             } else {
                 $result = $this->db->insertRiddleTranslationQuery(
-                    $riddle->getId(),
+                    $riddle->id,
                     $riddle->language,
                     $riddle->task,
                     $riddle->solution

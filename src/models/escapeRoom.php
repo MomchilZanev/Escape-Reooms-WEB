@@ -1,7 +1,7 @@
 <?php
 class EscapeRoom
 {
-    private $id;
+    public $id;
     public $name;
     public $language;
     public $difficulty;
@@ -23,16 +23,6 @@ class EscapeRoom
         $this->maxPlayers = $maxPlayers;
         $this->image = $image;
         $this->riddles = array();
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 }
 ?>

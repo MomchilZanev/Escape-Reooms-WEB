@@ -1,7 +1,7 @@
 <?php
 class Riddle
 {
-    private $id;
+    public $id;
     public $type;
     public $language;
     public $task;
@@ -16,14 +16,6 @@ class Riddle
         $this->task = $task;
         $this->solution = $solution;
         $this->image = $image;
-    }
-
-    public function getId() {
-        return $this->id;
-    }
-
-    public function setId($id) {
-        $this->id = $id;
     }
 }
 ?>
