@@ -4,121 +4,72 @@
 <head>
     <title>Managing Items Tests</title>
 </head>
-<meta charset="utf-8">
+<meta charset="utf-8"> <!-- Do Not Remove! Important for file encoding! -->
 
 <body>
 
     <button type="button" onclick="testGetRoomDetails(false)">Test Get Room Details</button>
-    <br />
+    <br>
     <button type="button" onclick="testGetRoomDetails(true)">Test Get Room Details Export</button>
-    <br />
+    <br>
     <button type="button" onclick="testAddRoom()">Test Add Room</button>
-    <br />
+    <br>
     <button type="button" onclick="testUpdateRoom()">Test Update Room</button>
-    <br />
+    <br>
     <button type="button" onclick="testTranslateRoom()">Test Translate Room</button>
-    <br />
+    <br>
     <button type="button" onclick="testDeleteRoom()">Test Delete Room</button>
-    <br />
-    <br />
+    <br>
+    <br>
     <button type="button" onclick="testGetRiddleDetails(false)">Test Get Riddle Details</button>
-    <br />
+    <br>
     <button type="button" onclick="testGetRiddleDetails(true)">Test Get Riddle Details Export</button>
-    <br />
+    <br>
     <button type="button" onclick="testAddRiddle()">Test Add Riddle</button>
-    <br />
+    <br>
     <button type="button" onclick="testUpdateRiddle()">Test Update Riddle</button>
-    <br />
+    <br>
     <button type="button" onclick="testTranslateRiddle()">Test Translate Riddle</button>
-    <br />
+    <br>
     <button type="button" onclick="testDeleteRiddle()">Test Delete Riddle</button>
-    <br />
+    <br>
     <button type="button" onclick="testAddRoomRiddle()">Test Add RoomRiddle</button>
-    <br />
+    <br>
     <button type="button" onclick="testDeleteRoomRiddle()">Test Delete RoomRiddle</button>
 </body>
 
+<script src="../scripts/helpers/fetchApiUtility.js"></script>
+<script src="../scripts/helpers/helperFunctions.js"></script>
+
 <script>
-    function testGetRoomDetails(exportParam = false) {
-        var url = "../src/controllers/escapeRoomController.php?";
+    async function testGetRoomDetails(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("escapeRoomController", "getRoomDetails", { id: 1, language: "en", export: exportParam }, callback);
 
         if (exportParam) {
-            fetch(url + new URLSearchParams({ action: "getRoomDetails", id: 1, language: "en", export: exportParam }))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.blob();
-                    }
-                    throw new Error("Error: " + response.status);
-                })
-                .then(function (blob) {
-                    var temp = document.createElement('a');
-                    temp.href = URL.createObjectURL(blob);
-                    temp.download = 'room-details-export.json';
-                    temp.click();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            downloadFile(data, "escape-room-details", "json");
         }
         else {
-            fetch(url + new URLSearchParams({ action: "getRoomDetails", id: 1, language: "en" }))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error("Error: " + response.status);
-                    }
-                })
-                .then(function (data) {
-                    console.log(data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            console.log(data);
         }
     }
 
-    function testAddRoom() {
-        var url = "../src/controllers/escapeRoomController.php?";
-
-        var roomObject = JSON.stringify({
+    async function testAddRoom() {
+        var roomToAdd = {
             language: "en",
             name: "Very new escape room",
             difficulty: 3,
             timeLimit: 45,
             minPlayers: 1,
             maxPlayers: 1,
-            image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg"            
-        });
-
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=addRoom&roomJson=" + encodeURIComponent(roomObject)
+            image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg"
         };
 
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        await fetchPost("escapeRoomController", "addRoom", { roomJson: roomToAdd });
     }
 
-    function testUpdateRoom() {
-        var url = "../src/controllers/escapeRoomController.php?";
-
-        var roomObject = JSON.stringify({
+    async function testUpdateRoom() {
+        var roomToUpdate = {
             id: 1,
             language: "en",
             name: "Sample escape room",
@@ -127,319 +78,91 @@
             minPlayers: 1,
             maxPlayers: 2,
             image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg"
-        });
-
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=updateRoom&roomJson=" + encodeURIComponent(roomObject)
         };
 
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        await fetchPost("escapeRoomController", "updateRoom", { roomJson: roomToUpdate });
     }
 
-    function testTranslateRoom() {
-        var url = "../src/controllers/escapeRoomController.php?";
-
-        var roomTranslation = JSON.stringify({
+    async function testTranslateRoom() {
+        var roomToTranslate = {
             id: 1,
             language: "fr",
             name: "Exemple de salle d'évasion"
-        });
-
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=translateRoom&roomJson=" + encodeURIComponent(roomTranslation)
         };
 
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        await fetchPost("escapeRoomController", "translateRoom", { roomJson: roomToTranslate });
     }
 
-    function testDeleteRoom() {
-        var url = "../src/controllers/escapeRoomController.php?";
-        var roomToDelete = 2;
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=deleteRoom&id=" + roomToDelete
-        };
-
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    async function testDeleteRoom() {
+        var roomToDeleteId = 3;
+        await fetchPost("escapeRoomController", "deleteRoom", { id: roomToDeleteId });
     }
 </script>
 
 <script>
-    function testGetRiddleDetails(exportParam = false) {
-        var url = "../src/controllers/riddleController.php?";
+    async function testGetRiddleDetails(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("riddleController", "getRiddleDetails", { id: 1, language: "en", export: exportParam }, callback);
 
         if (exportParam) {
-            fetch(url + new URLSearchParams({ action: "getRiddleDetails", id: 1, language: "en", export: exportParam }))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.blob();
-                    }
-                    throw new Error("Error: " + response.status);
-                })
-                .then(function (blob) {
-                    var temp = document.createElement('a');
-                    temp.href = URL.createObjectURL(blob);
-                    temp.download = 'riddle-details-export.json';
-                    temp.click();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            downloadFile(data, "riddle-details", "json");
         }
         else {
-            fetch(url + new URLSearchParams({ action: "getRiddleDetails", id: 1, language: "en" }))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error("Error: " + response.status);
-                    }
-                })
-                .then(function (data) {
-                    console.log(data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            console.log(data);
         }
     }
 
-    function testAddRiddle() {
-        var url = "../src/controllers/riddleController.php?";
-
-        var riddleObject = JSON.stringify({
+    async function testAddRiddle() {
+        var riddleToAdd = {
             type: "rebus",
             language: "en",
             task: "New task",
             solution: "New solution",
-            image: "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-4.jpg"            
-        });
-
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=addRiddle&riddleJson=" + encodeURIComponent(riddleObject)
+            image: "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-4.jpg"
         };
 
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        await fetchPost("riddleController", "addRiddle", { riddleJson: riddleToAdd });
     }
 
-    function testUpdateRiddle() {
-        var url = "../src/controllers/riddleController.php?";
-
-        var riddleObject = JSON.stringify({
+    async function testUpdateRiddle() {
+        var riddleToUpdate = {
             id: 3,
             type: "colors",
             language: "en",
             task: "New riddle task",
             solution: "New riddle solution",
-            image: "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-4.jpg" 
-        });
-
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=updateRiddle&riddleJson=" + encodeURIComponent(riddleObject)
+            image: "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-4.jpg"
         };
 
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        await fetchPost("riddleController", "updateRiddle", { riddleJson: riddleToUpdate });
     }
 
-    function testTranslateRiddle() {
-        var url = "../src/controllers/riddleController.php?";
-
-        var riddleTranslation = JSON.stringify({
+    async function testTranslateRiddle() {
+        var riddleToTranslate = {
             id: 1,
             language: "fr",
             task: "Tâche factice 1",
             solution: "Solution factice 1"
-        });
-
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=translateRiddle&riddleJson=" + encodeURIComponent(riddleTranslation)
         };
 
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        await fetchPost("riddleController", "translateRiddle", { riddleJson: riddleToTranslate });
     }
 
-    function testDeleteRiddle() {
-        var url = "../src/controllers/riddleController.php?";
-        var riddleToDelete = 3;
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=deleteRiddle&id=" + riddleToDelete
-        };
-
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    async function testDeleteRiddle() {
+        var riddleToDeleteId = 3;
+        await fetchPost("riddleController", "deleteRiddle", { id: riddleToDeleteId });
     }
 
-    function testAddRoomRiddle() {
-        var url = "../src/controllers/riddleController.php?";
+    async function testAddRoomRiddle() {
         var roomId = 1;
         var riddleId = 5;
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=addRoomRiddle&roomId=" + roomId + "&riddleId=" + riddleId
-        };
-
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        await fetchPost("riddleController", "addRoomRiddle", { roomId: roomId, riddleId: riddleId });
     }
 
-    function testDeleteRoomRiddle() {
-        var url = "../src/controllers/riddleController.php?";
+    async function testDeleteRoomRiddle() {
         var roomId = 1;
-        var riddleId = 4;
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=deleteRoomRiddle&roomId=" + roomId + "&riddleId=" + riddleId
-        };
-
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        var riddleId = 5;
+        await fetchPost("riddleController", "deleteRoomRiddle", { roomId: roomId, riddleId: riddleId });
     }
 </script>
 

@@ -4,101 +4,51 @@
 <head>
     <title>Importing Items Tests</title>
 </head>
-<meta charset="utf-8">
-<body>
+<meta charset="utf-8"> <!-- Do Not Remove! Important for file encoding! -->
 
+<body>
     <form>
         <input type="file" id="roomsFile">
-        <input type="button" value="Import Room(s)" onclick="readRoomsFromFile()">
+        <input type="button" value="Import Room(s)" onclick="importRooms()">
     </form>
 
-    <br/>
-    
+    <br>
+    <br>
+
     <form>
         <input type="file" id="riddlesFile">
-        <input type="button" value="Import Riddle(s)" onclick="readRiddlesFromFile()">
+        <input type="button" value="Import Riddle(s)" onclick="importRiddles()">
     </form>
-
 </body>
 
+<script src="../scripts/helpers/fetchApiUtility.js"></script>
+<script src="../scripts/helpers/helperFunctions.js"></script>
+
 <script>
-    // TODO: Add check for JSON file in final script
-    function readRoomsFromFile() {
-        var file = document.getElementById("roomsFile").files[0];
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            var fileContents = e.target.result;
-            importRooms(fileContents);
-        };
-
-        reader.readAsText(file);
+    function importRooms() {
+        readFile("roomsFile", importRoomsHelper);
     }
 
-    function importRooms(fileContents) {
-        var url = "../src/controllers/escapeRoomController.php";
-
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=importFromJson&jsonContents=" + encodeURIComponent(fileContents)
-        };
-
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    function importRiddles() {
+        readFile("riddlesFile", importRiddlesHelper);
     }
 
-    function readRiddlesFromFile() {
-        var file = document.getElementById("riddlesFile").files[0];
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            var fileContents = e.target.result;
-            importRiddles(fileContents);
-        };
-
-        reader.readAsText(file);
+    function importRoomsHelper(fileContents) {
+        try {
+            var jsonContents = JSON.parse(fileContents);
+            fetchPost("escapeRoomController", "importFromJson", { jsonContents: jsonContents });
+        } catch (error) {
+            console.error("Invalid JSON error: " + error);
+        }
     }
 
-    function importRiddles(fileContents) {
-        var url = "../src/controllers/riddleController.php";
-
-        var request = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            },
-            body: "action=importFromJson&jsonContents=" + encodeURIComponent(fileContents)
-        };
-
-        fetch(url, request)
-            .then(function (response) {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error("Error: " + response.status);
-                }
-            })
-            .then(function (data) {
-                console.log(data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    function importRiddlesHelper(fileContents) {
+        try {
+            var jsonContents = JSON.parse(fileContents);
+            fetchPost("riddleController", "importFromJson", { jsonContents: jsonContents });
+        } catch (error) {
+            console.error("Invalid JSON error: " + error);
+        }
     }
 </script>
 

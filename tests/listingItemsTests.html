@@ -4,152 +4,61 @@
 <head>
     <title>Listing Items Tests</title>
 </head>
-<meta charset="utf-8">
+<meta charset="utf-8"> <!-- Do Not Remove! Important for file encoding! -->
 
 <body>
 
     <button type="button" onclick="testGetAllRooms(false)">Test Get All Rooms</button>
-    <br />
+    <br>
     <button type="button" onclick="testGetAllRooms(true)">Test Get All Rooms Export</button>
-    <br />
+    <br>
     <button type="button" onclick="testFilterRooms(false)">Test Filter Rooms</button>
-    <br />
+    <br>
     <button type="button" onclick="testFilterRooms(true)">Test Filter Rooms Export</button>
-    <br />
+    <br>
     <button type="button" onclick="testGetAllRiddles(false)">Test Get All Riddles</button>
-    <br />
+    <br>
     <button type="button" onclick="testGetAllRiddles(true)">Test Get All Riddles Export</button>
-    <br />
 
 </body>
 
+<script src="../scripts/helpers/fetchApiUtility.js"></script>
+<script src="../scripts/helpers/helperFunctions.js"></script>
+
 <script>
-    function testGetAllRooms(exportParam = false) {
-        var url = "../src/controllers/escapeRoomController.php?";
+    async function testGetAllRooms(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("escapeRoomController", "getAllRooms", { language: "en", export: exportParam }, callback);
 
         if (exportParam) {
-            fetch(url + new URLSearchParams({ action: "getAllRooms", language: "en", export: exportParam }))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.blob();
-                    }
-                    throw new Error("Error: " + response.status);
-                })
-                .then(function (blob) {
-                    var temp = document.createElement('a');
-                    temp.href = URL.createObjectURL(blob);
-                    temp.download = 'all-rooms-export.json';
-                    temp.click();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            downloadFile(data, "all-escape-rooms", "json");
         }
         else {
-            fetch(url + new URLSearchParams({ action: "getAllRooms", language: "en" }))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error("Error: " + response.status);
-                    }
-                })
-                .then(function (data) {
-                    console.log(data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            console.log(data);
         }
     }
 
-    function testFilterRooms(exportParam = false) {
-        var url = "../src/controllers/escapeRoomController.php?";
-        var searchParams = {
-            action: "filterRooms",
-            language: "bg",
-            name: encodeURIComponent("ескейп"),
-            minDifficulty: 1,
-            maxDifficulty: 8,
-            minTimeLimit: 10,
-            maxTimeLimit: 240,
-            minPlayers: 1,
-            maxPlayers: 10,
-            export: exportParam
-        }
-
+    async function testFilterRooms(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("escapeRoomController", "filterRooms", { language: "en", export: exportParam }, callback);
+        
         if (exportParam) {
-            fetch(url + new URLSearchParams(searchParams))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.blob();
-                    }
-                    throw new Error("Error: " + response.status);
-                })
-                .then(function (blob) {
-                    var temp = document.createElement('a');
-                    temp.href = URL.createObjectURL(blob);
-                    temp.download = 'filtered-rooms-export.json';
-                    temp.click();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            downloadFile(data, "filtered-escape-rooms", "json");
         }
         else {
-            fetch(url + new URLSearchParams(searchParams))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error("Error: " + response.status);
-                    }
-                })
-                .then(function (data) {
-                    console.log(data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            console.log(data);
         }
     }
 
-    function testGetAllRiddles(exportParam = false) {
-        var url = "../src/controllers/riddleController.php?";
+    async function testGetAllRiddles(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("riddleController", "getAllRiddles", { language: "en", export: exportParam }, callback);
 
         if (exportParam) {
-            fetch(url + new URLSearchParams({ action: "getAllRiddles", language: "en", export: exportParam }))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.blob();
-                    }
-                    throw new Error("Error: " + response.status);
-                })
-                .then(function (blob) {
-                    var temp = document.createElement('a');
-                    temp.href = URL.createObjectURL(blob);
-                    temp.download = 'all-riddles-export.json';
-                    temp.click();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            downloadFile(data, "all-riddles", "json");
         }
         else {
-            fetch(url + new URLSearchParams({ action: "getAllRiddles", language: "en" }))
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error("Error: " + response.status);
-                    }
-                })
-                .then(function (data) {
-                    console.log(data);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            console.log(data);
         }
     }
 </script>
