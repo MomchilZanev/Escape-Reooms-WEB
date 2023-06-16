@@ -1,0 +1,64 @@
+.dataContainer {
+  width: 80%;
+  height: 80%;
+  margin: 5% 0 0 10%;
+}
+
+.metadata, #dataOneObjectContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 5px; /* Gap between grid items */
+  align-items: center;
+  margin: 0 10%;
+}
+
+.metadata {
+  font-size: 16px;
+}
+
+#dataOneObjectContainer {
+  width: 80%;
+  margin-bottom: 30px;
+}
+
+.dataTitle {
+  text-align: center;
+  margin: 20px 0 20px 0;
+}
+
+#metadataProblemValue, #metadataSolutionValue {
+  margin-bottom: 50px;
+}
+
+#dataImage {
+  height: 350px;
+  width: 240px;
+  margin: 5% 0;
+}
+
+@media screen and (max-width: 950px) {
+  #dataImage {
+	  height: 225px;
+    width: 150px;
+    margin: 0;
+  }
+}
+
+.formRow {
+  float: right;
+  width: 250px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Three columns with equal width */
+  grid-gap: 5px; /* Gap between grid items */
+}
+
+input[type="button"], input[type="submit"] {
+  
+  background-color: #d9d9d9;
+  color: #002f63;
+  text-align: center;
+  border-radius: 15px;
+  padding: 10px;
+  width: 100px;
+}

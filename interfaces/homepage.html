@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
+    <link rel="stylesheet" href="../css/filterContainer.css" type="text/css">
+    <script defer src="../scripts/front-end/homepage.js"></script>
+  </head>
+<body>
+  <div class="FilterBy">
+    <form>
+      <div class="formRow">
+        <label for="langTextBox">Language:</label>
+        <input type="text" id="langTextBox" placeholder="EN"><br>
+      </div>
+      <div class="formRow">
+        <label for="difficultyMin">Difficulty:</label><br>
+        <input type="text" class="numTextBox" placeholder="From:" id="difficultyMin">
+
+        <label for="difficultyMax" hidden>Difficulty:</label>
+        <input type="text" class="numTextBox" placeholder="To:" id="difficultyMax"><br>
+      </div>
+      <div class="formRow">
+        <label for="minTimeLimit">Time to solve (min):</label><br>
+        <input type="text" class="numTextBox" placeholder="From:" id="minTimeLimit">
+        <label for="maxTimeLimit" hidden></label>
+        <input type="text" class="numTextBox" placeholder="To:" id="maxTimeLimit"><br>
+      </div>
+      <div class="formRow">
+        <label for="minPlayers">Players:</label><br>
+        <input type="text" class="numTextBox" placeholder="From:" id="minPlayers">
+        <label for="minPlayers" hidden></label>
+        <input type="text" class="numTextBox" placeholder="To:" id="maxPlayers"><br>
+      </div>
+      <div class="filterButtons">
+        <input type="submit" id="submitFilterButton" value="Filter">
+        <input type="button" id="cancelFilterButton" value="Clear">
+      </div>
+    </form>  
+  </div>
+  <div class="objectContainer">
+    <div class="objectBox">
+      <a id="1"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="2"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="3"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="4"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="5"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="7"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+  </div>
+
+  
+</body>
+</html>

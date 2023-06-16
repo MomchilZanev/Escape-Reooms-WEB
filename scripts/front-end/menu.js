@@ -2,13 +2,6 @@ var btnMenu = document.querySelector('.btnMenu');
 var sidebar = document.querySelector('.sidebar');
 var listItems = document.querySelectorAll('nav ul li');
 
-var LanguageIconBtn = document.getElementById("LanguageIconBtn");
-
-LanguageIconBtn.addEventListener('click', function () {
-	window.location = 'index.html';
-});
-
-// Toggle the click class and show class on button click
 btnMenu.addEventListener('click', function() {
 	btnMenu.classList.toggle('click');
 	sidebar.classList.toggle('show');
@@ -24,5 +17,19 @@ for (var i = 0; i < listItems.length; i++) {
 		siblings[j].classList.remove('active');
 		}
 	}
+	
+	openContent(this.children[0].id + '.html');
 	});
 }
+
+function openContent(filename) {
+  iframe = top.document.getElementById('innerPage');
+  iframe.width  = iframe.contentWindow.document.body.scrollWidth;
+  iframe.height = iframe.contentWindow.document.body.scrollHeight;
+  iframe.setAttribute("src",filename);
+  
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  openContent('homepage.html');
+});

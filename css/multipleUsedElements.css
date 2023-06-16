@@ -1,0 +1,53 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #d9d9d9;
+}
+
+.objectContainer {
+  margin: 2% 2% 10px 2%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.objectBox {
+  margin: 0px 3% 3% 3%;
+  word-wrap: break-word;
+}
+
+img {
+  height: 225px;
+  width: 150px;
+}
+
+input[type="text"]{
+  background-color: white;
+}
+
+#langTextBox {
+  width: 30px;
+}
+
+.numTextBox {
+  width: 60px;
+}
+
+.riddleTypeTextBox {
+  width: 120px;
+}
+
+.formRow, .formRowButtons {
+  margin-top: 10px;
+}
+
+input::placeholder {
+  font-style: italic;
+}
+
+input[type="button"], input[type="submit"] {
+  background-color: #002f63;
+  color: #d9d9d9;
+  text-align: center;
+  border-radius: 15px;
+  padding: 6px;
+}

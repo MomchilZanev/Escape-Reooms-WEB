@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
+  <link rel="stylesheet" href="../css/importRoom.css" type="text/css">
+  <script defer src="../scripts/front-end/showRiddles.js"></script>
+  <script defer src="../scripts/front-end/updateRoom.js"></script>
+</head>
+<body>
+  <div class="ImportContainer">
+    <div class="formRow">
+      <label for="langTextBox">Language:</label>
+      <input type="text" id="langTextBox" placeholder="EN"><br>
+    </div>
+    <div class="formRow">
+      <label for="difficultyMin">Difficulty:</label>
+      <input type="text" class="numTextBox" placeholder="From:" id="difficultyMin">
+
+      <label for="difficultyMax" hidden>Difficulty:</label>
+      <input type="text" class="numTextBox" placeholder="To:" id="difficultyMax"><br>
+    </div>
+    <div class="formRow">
+      <label for="minTimeLimit">Time to solve:</label>
+      <input type="text" class="numTextBox" placeholder="From:" id="minTimeLimit">
+      <label for="maxTimeLimit" hidden></label>
+      <input type="text" class="numTextBox" placeholder="To:" id="maxTimeLimit"><br>
+    </div>
+    <div class="formRow">
+      <label for="minPlayers">Players:</label>
+      <input type="text" class="numTextBox" placeholder="From:" id="minPlayers">
+      <label for="minPlayers" hidden></label>
+      <input type="text" class="numTextBox" placeholder="To:" id="maxPlayers"><br>
+    </div>
+    <p>IMPORTANT: The two text boxes for information are respectively for "from" and "to"</p>
+    <div class="formRowButtons">
+      <input type="button" id="addRiddle" value="Add riddle">
+      <input type="button" id="removeRiddle" value="Remove riddle">
+      <input type="submit" id="submitUpdateButton" value="Apply">
+      <input type="button" id="cancelUpdateRoom" value="Cancel">
+    </div>
+  </div>
+
+  <h2 id="titleAddedRiddles"> Current riddles: </h2>
+  <div class="objectContainer">
+    <div class="objectBox">
+      <a><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+  </div>
+</body>
+</html>

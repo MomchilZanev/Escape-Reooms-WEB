@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;">
+    <title>EscapeRoom</title>
+    <script defer src="../scripts/front-end/menu.js"></script>
+    <script defer src="../scripts/front-end/menuTranslation.js"></script>
+    <link rel="stylesheet" href="../css/backbone.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+
+<body>
+  
+  <header>
+    <div class="headerBox">
+      <div class="btnMenu">
+        <span class="fas fa-bars"></span>
+      </div>
+    </div>
+
+    <div class="headerBox" id="headerCenter">
+      <h1 id="caption">Escaperooms</h1>
+    </div>
+
+    <div class="headerBox" id="headerRight">
+      <button type="button" class="LanguageIconBtn" id="BG">БГ</button>
+      <button type="button" class="LanguageIconBtn" id="EN">EN</button>
+    </div>
+  
+  </header>
+
+  <nav class="sidebar">
+    <ul>
+      <li class="active"><a id="homepage">Homepage</a></li>
+      <li><a id="showRiddles">Show riddles</a></li>
+      <li><a id="importRoom">Import a room</a></li>
+      <li><a id="exportRooms">Export rooms</a></li>
+      <li><a id="documentation">Documentation</a></li>
+      <li><a id="detailedPageRoom">Detailed page room</a></li>
+      <li><a id="detailedPageRiddle">Detailed page riddle</a></li>
+    </ul>
+  </nav>
+
+  <iframe src="" id="innerPage"></iframe>
+
+</body>
+</html>
