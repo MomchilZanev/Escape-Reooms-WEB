@@ -2,7 +2,7 @@ How to run interfaces:
 
 1. Open VS code
 2. Download live server
-3. Load backbone.html on VS code
+3. Open backbone.html on VS code
 4. Press F1
 5. Click open with live server
 
