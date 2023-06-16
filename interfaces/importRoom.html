@@ -5,18 +5,18 @@
   <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
   <link rel="stylesheet" href="../css/importRoom.css" type="text/css">
   <script defer src="../scripts/front-end/showRiddles.js"></script>
+  <script defer src="../scripts/front-end/modifyRoom.js"></script>
 </head>
 <body>
-  <div class="ImportContainer">
+  <form class="ImportContainer">
     <div class="formRowButtons"> 
       <input type="file" id="uploadFile" name="uploadFile" value="Browse...">
     </div>
     <div class="formRowButtons">
-      <input type="button" id="addRiddle" value="Add riddle">
-      <input type="button" id="removeRiddle" value="Remove riddle">
+      <input type="button" id="addRemoveRiddle" value="Add/Remove riddle">
       <input type="submit" id="submitImportButton" value="Import">
     </div>
-  </div>
+  </form>
 
   <h2 id="titleAddedRiddles"> Current riddles: </h2>
   <div class="objectContainer">

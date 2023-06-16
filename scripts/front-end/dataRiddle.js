@@ -6,9 +6,9 @@ updateRiddle.addEventListener('click', function() {
 });
 
 deleteRiddle.addEventListener('click', function() {
-  if (confirm('Do you want to delete this page?')) {
+  if (confirm('Do you want to delete this riddle?')) {
     //yourformelement.submit();
-    window.location = 'homepage.html';
+    window.history.back();
   } else {
       return false;
   }

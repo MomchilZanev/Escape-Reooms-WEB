@@ -7,35 +7,30 @@
   <script defer src="../scripts/front-end/updateRiddle.js"></script>
 </head>
 <body>
-  <div class="ImportContainer">
+  <form class="ImportContainer">
     <div class="formRow">
       <label for="langTextBox">Language:</label>
       <input type="text" id="langTextBox" placeholder="EN"><br>
     </div>
     <div class="formRow">
-      <label for="difficultyMin">Difficulty:</label>
-      <input type="text" class="numTextBox" placeholder="From:" id="difficultyMin">
-
-      <label for="difficultyMax" hidden>Difficulty:</label>
-      <input type="text" class="numTextBox" placeholder="To:" id="difficultyMax"><br>
+      <label for="typeSearch">Type:</label><br>
+      <input type="search" class="riddleTypeTextBox" list="listTypes" id="typeSearch"><br>
+      <datalist id="listTypes">
+        <option value="Numeric"></option>
+        <option value="Text"></option>
+        <option value="Physical"></option>
+        <option value="Virtual"></option>
+      </datalist>
     </div>
     <div class="formRow">
-      <label for="minTimeLimit">Time to solve:</label>
-      <input type="text" class="numTextBox" placeholder="From:" id="minTimeLimit">
-      <label for="maxTimeLimit" hidden></label>
-      <input type="text" class="numTextBox" placeholder="To:" id="maxTimeLimit"><br>
-    </div>
-    <div class="formRow">
-      <label for="minPlayers">Players:</label>
-      <input type="text" class="numTextBox" placeholder="From:" id="minPlayers">
-      <label for="minPlayers" hidden></label>
-      <input type="text" class="numTextBox" placeholder="To:" id="maxPlayers"><br>
+      <label for="imgTextBox">Image URL:</label>
+      <input type="text" id="imgTextBox" placeholder="URL:"><br>
     </div>
     <p>IMPORTANT: The two text boxes for information are respectively for "from" and "to"</p>
     <div class="formRowButtons">
       <input type="submit" id="submitUpdateButton" value="Apply">
       <input type="button" id="cancelUpdateRiddle" value="Cancel">
     </div>
-  </div>
+  </form>
 </body>
 </html>

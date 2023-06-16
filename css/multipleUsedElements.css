@@ -13,6 +13,10 @@ body {
 .objectBox {
   margin: 0px 3% 3% 3%;
   word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 img {
@@ -36,6 +40,16 @@ input[type="text"]{
   width: 120px;
 }
 
+#imgTextBox {
+  width: 420px;
+}
+
+@media screen and (max-width: 900px) {
+  #imgTextBox {
+    width: 80%;
+  }
+}
+
 .formRow, .formRowButtons {
   margin-top: 10px;
 }
@@ -50,4 +64,8 @@ input[type="button"], input[type="submit"] {
   text-align: center;
   border-radius: 15px;
   padding: 6px;
+}
+
+h2 {
+  text-align: center;
 }

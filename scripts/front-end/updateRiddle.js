@@ -2,7 +2,7 @@ var cancel = document.getElementById("cancelUpdateRiddle");
 var submitUpdateRiddle = document.getElementById("submitUpdateButton");
 
 cancel.addEventListener('click', function() {
-  window.location = 'dataPageRoom.html';
+  window.history.back();
 });
 
 submitUpdateRiddle.addEventListener('click', function() {

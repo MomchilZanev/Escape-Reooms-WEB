@@ -6,9 +6,9 @@ updateButton.addEventListener('click', function() {
 });
 
 deleteButton.addEventListener('click', function() {
-  if (confirm('Do you want to delete this page?')) {
+  if (confirm('Do you want to delete this room?')) {
     //yourformelement.submit();
-    window.location = 'homepage.html';
+    window.history.back();
   } else {
       return false;
   }
