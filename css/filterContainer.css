@@ -12,7 +12,8 @@
 }
 
 .FilterBy{
-  display: block;
+  display: flex;
+  flex-direction: column;
   float: left;
   margin: 50px 20px 0px 10px;
   width: 200px;
@@ -21,4 +22,12 @@
   color: #002f63;
   border-radius: 15px;
   padding: 20px;
+}
+
+.FilterContainer {
+  width: 200px;
+}
+
+#exportContainer {
+  background-color: #002f63;
 }

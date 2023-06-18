@@ -6,36 +6,57 @@
     <script defer src="../scripts/front-end/homepage.js"></script>
   </head>
 <body>
-  <div class="FilterBy">
-    <form>
-      <div class="formRow">
-        <label for="langTextBox">Language:</label>
-        <input type="text" id="langTextBox" placeholder="EN"><br>
-      </div>
-      <div class="formRow">
-        <label for="difficultyMin">Difficulty:</label><br>
-        <input type="text" class="numTextBox" placeholder="From:" id="difficultyMin">
+  <div class="FilterContainer">
+    <div class="FilterBy">
+      <form>
+        <div class="formRow">
+          <label for="langTextBox">Language:</label>
+          <input type="text" id="langTextBox" placeholder="EN"><br>
+        </div>
+        <div class="formRow">
+          <label for="difficultyMin">Difficulty:</label><br>
+          <input type="text" class="numTextBox" placeholder="From:" id="difficultyMin">
 
-        <label for="difficultyMax" hidden>Difficulty:</label>
-        <input type="text" class="numTextBox" placeholder="To:" id="difficultyMax"><br>
-      </div>
-      <div class="formRow">
-        <label for="minTimeLimit">Time to solve (min):</label><br>
-        <input type="text" class="numTextBox" placeholder="From:" id="minTimeLimit">
-        <label for="maxTimeLimit" hidden></label>
-        <input type="text" class="numTextBox" placeholder="To:" id="maxTimeLimit"><br>
-      </div>
-      <div class="formRow">
-        <label for="minPlayers">Players:</label><br>
-        <input type="text" class="numTextBox" placeholder="From:" id="minPlayers">
-        <label for="minPlayers" hidden></label>
-        <input type="text" class="numTextBox" placeholder="To:" id="maxPlayers"><br>
-      </div>
-      <div class="filterButtons">
-        <input type="submit" id="submitFilterButton" value="Filter">
-        <input type="button" id="cancelFilterButton" value="Clear">
-      </div>
-    </form>  
+          <label for="difficultyMax" hidden>Difficulty:</label>
+          <input type="text" class="numTextBox" placeholder="To:" id="difficultyMax"><br>
+        </div>
+        <div class="formRow">
+          <label for="minTimeLimit">Time to solve (min):</label><br>
+          <input type="text" class="numTextBox" placeholder="From:" id="minTimeLimit">
+          <label for="maxTimeLimit" hidden></label>
+          <input type="text" class="numTextBox" placeholder="To:" id="maxTimeLimit"><br>
+        </div>
+        <div class="formRow">
+          <label for="minPlayers">Players:</label><br>
+          <input type="text" class="numTextBox" placeholder="From:" id="minPlayers">
+          <label for="minPlayers" hidden></label>
+          <input type="text" class="numTextBox" placeholder="To:" id="maxPlayers"><br>
+        </div>
+        <div class="filterButtons">
+          <input type="submit" class="formButtons" id="submitFilterButton" value="Filter">
+          <input type="button" class="formButtons" id="cancelFilterButton" value="Clear">
+        </div>
+      </form>  
+    </div>
+    <div class="FilterBy">
+      <form>
+        <div class="formRow">
+          <label for="langTextBox">Language:</label>
+          <input type="text" id="langTextBox" placeholder="EN"><br>
+        </div>
+        <div class="formRow">
+          <label for="difficultyMin">Search:</label><br>
+          <input type="text" class="searchTextBox">
+        </div>
+        <div class="filterButtons">
+          <input type="submit" class="formButtons" id="submitFilterButton" value="Search">
+          <input type="button" class="formButtons" id="cancelFilterButton" value="Clear">
+        </div>
+      </form>  
+    </div>
+    <div class="FilterBy" id="exportContainer">
+      <button id="ExportHomepageRooms" class="exportRelated">Export shown rooms</button>
+    </div>
   </div>
   <div class="objectContainer">
     <div class="objectBox">
@@ -54,7 +75,25 @@
       <a id="5"><img src="../images/example.jpg" title="Title1"></a>
     </div>
     <div class="objectBox">
+      <a id="6"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
       <a id="7"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="8"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="9"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="10"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="11"><img src="../images/example.jpg" title="Title1"></a>
+    </div>
+    <div class="objectBox">
+      <a id="12"><img src="../images/example.jpg" title="Title1"></a>
     </div>
   </div>
 

@@ -1,7 +1,4 @@
-.addAndDelete, input[type="submit"], input[type="button"] {
-  background-color: #d9d9d9;
-  color: #002f63;
-  text-align: center;
+.addAndDelete, .afterObjectsButton {
   margin-bottom: 20px;
 }
 
@@ -11,11 +8,11 @@
   width: 70px;
 }
 
-input[type="submit"], input[type="button"] {
+.afterObjectsButton {
   margin-top: 10px;
-  border-radius: 25px;
+  border-radius: 15px;
   padding: 10px;
-  width: 70px;
+  width: 100px;
 }
 
 input[type="submit"] {

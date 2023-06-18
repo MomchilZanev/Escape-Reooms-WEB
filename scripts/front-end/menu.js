@@ -5,6 +5,13 @@ var listItems = document.querySelectorAll('nav ul li');
 btnMenu.addEventListener('click', function() {
 	btnMenu.classList.toggle('click');
 	sidebar.classList.toggle('show');
+	image = btnMenu.children[0];
+	const pattern = /.*menu\.svg$/;
+	if (pattern.test(image.src)) {
+		image.setAttribute("src", "../images/left-arrow.svg");
+	} else {
+		image.setAttribute("src", "../images/menu.svg");
+	}
 });
 
 // Add the active class and remove it from siblings on list item click
