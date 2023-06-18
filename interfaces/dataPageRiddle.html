@@ -1,44 +1,48 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
-    <link rel="stylesheet" href="../css/dataPage.css">
-    <script defer src="../scripts/front-end/dataRiddle.js"></script>
 
-  </head>
+<head>
+  <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
+  <link rel="stylesheet" href="../css/dataPage.css">
+  <script defer src="../scripts/front-end/dataRiddle.js"></script>
 
-  <body>
-    <div class="dataContainer">
-      <h1 class="dataTitle"> Title1 </h1>
-      <div id="dataOneObjectContainer">
-        <img src="../images/example.jpg" id="dataImage" title="Title1">
-        <div class="metadataContainer">
-          <div class="metadata" id="metadataLanguage">
-            <p>Language:</p>
-            <p id="metadataLanguageValue">unknown</p>
-          </div>
-          <div class="metadata" id="metadataType">
-            <p>Type:</p>
-            <p id="metadataTypeValue">unknown</p>
-          </div>
+</head>
+
+<body>
+  <div class="dataContainer">
+    <h1 class="dataTitle"> Title1 </h1>
+    <div id="dataOneObjectContainer">
+      <img src="../images/example.jpg" id="dataImage" title="Title1">
+      <div class="metadataContainer">
+        <div class="metadata" id="metadataLanguage">
+          <p class="localizedText filterLanguage"></p>
+          <p id="metadataLanguageValue">unknown</p>
+        </div>
+        <div class="metadata" id="metadataType">
+          <p class="localizedText typeLabel"></p>
+          <p id="metadataTypeValue">unknown</p>
         </div>
       </div>
-      <p>Problem:</p>
-      <p id="metadataProblemValue">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <p>Solution:</p>
-      <p id="metadataSolutionValue">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <div class="formRow">
-        <input type="button" id="exportRiddle" value="Export">
-        <input type="button" id="updateRiddle" value="Update">
-        <input type="button" id="deleteRiddle" value="Delete">
-      </div>
     </div>
-  </body>
+    <p class="localizedText problemLabel"></p>
+    <p id="metadataProblemValue">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <p class="localizedText solutionLabel"></p>
+    <p id="metadataSolutionValue">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <div class="formRow">
+      <input type="button" class="localizedValue exportButton" id="exportRiddle">
+      <input type="button" class="localizedValue updateButton" id="updateRiddle">
+      <input type="button" class="localizedValue deleteButton" id="deleteRiddle">
+    </div>
+  </div>
+</body>
+
 </html>
