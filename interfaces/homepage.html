@@ -1,61 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
-    <link rel="stylesheet" href="../css/filterContainer.css" type="text/css">
-    <script defer src="../scripts/front-end/homepage.js"></script>
-  </head>
+
+<head>
+  <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
+  <link rel="stylesheet" href="../css/filterContainer.css" type="text/css">
+  <script defer src="../scripts/front-end/homepage.js"></script>
+</head>
+
 <body>
   <div class="FilterContainer">
     <div class="FilterBy">
       <form>
         <div class="formRow">
-          <label for="langTextBox">Language:</label>
-          <input type="text" id="langTextBox" placeholder="EN"><br>
+          <label for="langTextBox" class="localizedText filterLanguage"></label>
+          <input type="text" id="langTextBox" class="localizedPlaceholder langEN"><br>
         </div>
         <div class="formRow">
-          <label for="difficultyMin">Difficulty:</label><br>
-          <input type="text" class="numTextBox" placeholder="From:" id="difficultyMin">
+          <label for="difficultyMin" class="localizedText filterDifficulty"></label><br>
+          <input type="text" class="numTextBox localizedPlaceholder min" id="difficultyMin">
 
-          <label for="difficultyMax" hidden>Difficulty:</label>
-          <input type="text" class="numTextBox" placeholder="To:" id="difficultyMax"><br>
+          <label for="difficultyMax" class="localizedText filterDifficulty" hidden></label>
+          <input type="text" class="numTextBox localizedPlaceholder max" id="difficultyMax"><br>
         </div>
         <div class="formRow">
-          <label for="minTimeLimit">Time to solve (min):</label><br>
-          <input type="text" class="numTextBox" placeholder="From:" id="minTimeLimit">
-          <label for="maxTimeLimit" hidden></label>
-          <input type="text" class="numTextBox" placeholder="To:" id="maxTimeLimit"><br>
+          <label for="minTimeLimit" class="localizedText filterTimeLimit"></label><br>
+          <input type="text" class="numTextBox localizedPlaceholder min" id="minTimeLimit">
+          <label for="maxTimeLimit" class="localizedText filterTimeLimit" hidden></label>
+          <input type="text" class="numTextBox localizedPlaceholder max" id="maxTimeLimit"><br>
         </div>
         <div class="formRow">
-          <label for="minPlayers">Players:</label><br>
-          <input type="text" class="numTextBox" placeholder="From:" id="minPlayers">
-          <label for="minPlayers" hidden></label>
-          <input type="text" class="numTextBox" placeholder="To:" id="maxPlayers"><br>
+          <label for="minPlayers" class="localizedText filterPlayers"></label><br>
+          <input type="text" class="numTextBox localizedPlaceholder min" id="minPlayers">
+          <label for="minPlayers" class="localizedText filterPlayers" hidden></label>
+          <input type="text" class="numTextBox localizedPlaceholder max" id="maxPlayers"><br>
         </div>
         <div class="filterButtons">
-          <input type="submit" class="formButtons" id="submitFilterButton" value="Filter">
-          <input type="button" class="formButtons" id="cancelFilterButton" value="Clear">
+          <input type="submit" class="formButtons localizedValue filterSubmit" id="submitFilterButton">
+          <input type="button" class="formButtons localizedValue filterClear" id="cancelFilterButton">
         </div>
-      </form>  
+      </form>
     </div>
     <div class="FilterBy">
       <form>
         <div class="formRow">
-          <label for="langTextBox">Language:</label>
-          <input type="text" id="langTextBox" placeholder="EN"><br>
+          <label for="langTextBox" class="localizedText filterLanguage"></label>
+          <input type="text" id="langTextBox" class="localizedPlaceholder langEN"><br>
         </div>
         <div class="formRow">
-          <label for="difficultyMin">Search:</label><br>
+          <label for="difficultyMin" class="localizedText filterSearch"></label><br>
           <input type="text" class="searchTextBox">
         </div>
         <div class="filterButtons">
-          <input type="submit" class="formButtons" id="submitFilterButton" value="Search">
-          <input type="button" class="formButtons" id="cancelFilterButton" value="Clear">
+          <input type="submit" class="formButtons localizedValue filterSearchSubmit" id="submitFilterButton">
+          <input type="button" class="formButtons localizedValue filterClear" id="cancelFilterButton">
         </div>
-      </form>  
+      </form>
     </div>
     <div class="FilterBy" id="exportContainer">
-      <button id="ExportHomepageRooms" class="exportRelated">Export shown rooms</button>
+      <button id="ExportHomepageRooms" class="exportRelated localizedText exportRooms"></button>
     </div>
   </div>
   <div class="objectContainer">
@@ -97,6 +99,7 @@
     </div>
   </div>
 
-  
+
 </body>
+
 </html>

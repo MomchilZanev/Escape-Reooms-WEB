@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
   <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
   <link rel="stylesheet" href="../css/import.css" type="text/css">
   <script defer src="../scripts/front-end/showRiddles.js"></script>
   <script defer src="../scripts/front-end/modifyRoom.js"></script>
 </head>
+
 <body>
-  
-  <h2> Import a room/rooms: </h2>
+
+  <h2 class="localizedText importRoomsTitle"></h2>
   <form class="ImportContainer">
-    <div class="formRowButtons"> 
-      <input type="file" id="uploadFile" name="uploadFile" value="Browse...">
+    <div class="formRowButtons">
+      <input type="file" id="uploadRoomsFile" name="uploadRoomsFile">
     </div>
     <div class="formRowButtons">
-      <input type="submit" class="formButtons" id="submitImportButtonRoom" value="Import">
+      <input type="submit" class="formButtons localizedValue importButton" id="submitImportButtonRoom">
     </div>
   </form>
 
-  <h2> Import a riddle/riddles: </h2>
+  <h2 class="localizedText importRiddlesTitle"></h2>
   <form class="ImportContainer">
-    <div class="formRowButtons"> 
-      <input type="file" id="uploadFile" name="uploadFile" value="Browse...">
+    <div class="formRowButtons">
+      <input type="file" id="uploadRiddlesFile" name="uploadRiddlesFile">
     </div>
     <div class="formRowButtons">
-      <input type="submit" class="formButtons" id="submitImportButtonRiddle" value="Import">
+      <input type="submit" class="formButtons localizedValue importButton" id="submitImportButtonRiddle">
     </div>
   </form>
 </body>
 
 </body>
+
 </html>

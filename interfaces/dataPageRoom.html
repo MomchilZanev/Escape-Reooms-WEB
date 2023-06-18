@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
-    <link rel="stylesheet" href="../css/dataPage.css">
-    <script defer src="../scripts/front-end/showRiddles.js"></script>
-    <script defer src="../scripts/front-end/dataRoom.js"></script>
-  </head>
 
-  <body>
-    <div class="dataContainer">
-      <h1 class="dataTitle"> Title1 </h1>
-      <div id="dataOneObjectContainer">
-        <img src="../images/example.jpg" id="dataImage" title="Title1">
-        <div class="metadataContainer">
-          <div class="metadata" id="metadataLanguage">
-            <p>Language:</p>
-            <p id="metadataLanguageValue">unknown</p>
-          </div>
-          <div class="metadata" id="metadataDifficulty">
-            <p>Difficulty:</p>
-            <p id="metadataDifficultyValue">unknown</p>
-          </div>
-          <div class="metadata" id="metadataTimeLimit">
-            <p>Time to solve:</p>
-            <p id="metadataTimeLimitValue">unknown</p>
-          </div>
-          <div class="metadata" id="metadataMinPlayers">
-            <p>Minimum players:</p>
-            <p id="metadataMinPlayersValue">unknown</p>
-          </div>
-          <div class="metadata" id="metadataMaxPlayers">
-            <p>Maximum players:</p>
-            <p id="metadataMaxPlayersValue">unknown</p>
-          </div>
+<head>
+  <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
+  <link rel="stylesheet" href="../css/dataPage.css">
+  <script defer src="../scripts/front-end/showRiddles.js"></script>
+  <script defer src="../scripts/front-end/dataRoom.js"></script>
+</head>
+
+<body>
+  <div class="dataContainer">
+    <h1 class="dataTitle"> Title1 </h1>
+    <div id="dataOneObjectContainer">
+      <img src="../images/example.jpg" id="dataImage" title="Title1">
+      <div class="metadataContainer">
+        <div class="metadata" id="metadataLanguage">
+          <p class="localizedText filterLanguage"></p>
+          <p id="metadataLanguageValue">unknown</p>
         </div>
-      </div>
-      <h1 class="dataTitle"> Riddles </h1>
-      <div class="objectContainer">
-        <div class="objectBox">
-          <a id="1"><img src="../images/example.jpg" title="Title1"></a>
+        <div class="metadata" id="metadataDifficulty">
+          <p class="localizedText filterDifficulty"></p>
+          <p id="metadataDifficultyValue">unknown</p>
         </div>
-        <div class="objectBox">
-          <a id="2"><img src="../images/example.jpg" title="Title1"></a>
+        <div class="metadata" id="metadataTimeLimit">
+          <p class="localizedText filterTimeLimit"></p>
+          <p id="metadataTimeLimitValue">unknown</p>
         </div>
-        <div class="objectBox">
-          <a id="3"><img src="../images/example.jpg" title="Title1"></a>
+        <div class="metadata" id="metadataMinPlayers">
+          <p class="localizedText minPlayersLabel"></p>
+          <p id="metadataMinPlayersValue">unknown</p>
         </div>
-        <div class="objectBox">
-          <a id="4"><img src="../images/example.jpg" title="Title1"></a>
+        <div class="metadata" id="metadataMaxPlayers">
+          <p class="localizedText maxPlayersLabel"></p>
+          <p id="metadataMaxPlayersValue">unknown</p>
         </div>
-        <div class="objectBox">
-          <a id="5"><img src="../images/example.jpg" title="Title1"></a>
-        </div>
-        <div class="objectBox">
-          <a id="7"><img src="../images/example.jpg" title="Title1"></a>
-        </div>
-      </div>
-      <div class="formRow">
-        <input type="button" id="exportRoom" value="Export">
-        <input type="button" id="updateRoom" value="Update">
-        <input type="button" id="deleteRoom" value="Delete">
       </div>
     </div>
-    
-  </body>
+    <h1 class="dataTitle localizedText riddlePageTitle"></h1>
+    <div class="objectContainer">
+      <div class="objectBox">
+        <a id="1"><img src="../images/example.jpg" title="Title1"></a>
+      </div>
+      <div class="objectBox">
+        <a id="2"><img src="../images/example.jpg" title="Title1"></a>
+      </div>
+      <div class="objectBox">
+        <a id="3"><img src="../images/example.jpg" title="Title1"></a>
+      </div>
+      <div class="objectBox">
+        <a id="4"><img src="../images/example.jpg" title="Title1"></a>
+      </div>
+      <div class="objectBox">
+        <a id="5"><img src="../images/example.jpg" title="Title1"></a>
+      </div>
+      <div class="objectBox">
+        <a id="7"><img src="../images/example.jpg" title="Title1"></a>
+      </div>
+    </div>
+    <div class="formRow">
+      <input type="button" class="localizedValue exportButton" id="exportRoom">
+      <input type="button" class="localizedValue updateButton" id="updateRoom">
+      <input type="button" class="localizedValue deleteButton" id="deleteRoom">
+    </div>
+  </div>
+
+</body>
+
 </html>

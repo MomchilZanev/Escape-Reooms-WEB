@@ -1,43 +1,50 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
   <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
   <link rel="stylesheet" href="../css/updateRoom.css" type="text/css">
   <script defer src="../scripts/front-end/updateRiddle.js"></script>
 </head>
+
 <body>
   <form class="ImportContainer">
     <div class="formRow">
-      <label for="langTextBox">Language:</label>
-      <input type="text" id="langTextBox" placeholder="EN"><br>
+      <label for="langTextBox" class="localizedText filterLanguage"></label>
+      <input type="text" id="langTextBox" class="localizedPlaceholder langEN"><br>
     </div>
     <div class="formRow">
-      <label for="typeSearch">Type:</label><br>
+      <label for="typeSearch" class="localizedText typeLabel"></label><br>
       <input type="search" class="riddleTypeTextBox" list="listTypes" id="typeSearch"><br>
       <datalist id="listTypes">
         <option value="Numeric"></option>
-        <option value="Text"></option>
-        <option value="Physical"></option>
-        <option value="Virtual"></option>
+        <option value="Colors"></option>
+        <option value="Shapes"></option>
+        <option value="Rebus"></option>
+        <option value="Directions"></option>
+        <option value="Sorting"></option>
+        <option value="Trivia"></option>
+        <option value="Other"></option>
       </datalist>
     </div>
     <div class="formRow">
-      <label for="describeTextBoxProblem">Problem:</label><br>
+      <label for="describeTextBoxProblem" class="localizedText problemLabel"></label><br>
       <textarea rows="10" cols="100" id="describeTextBoxProblem"></textarea>
     </div>
     <div class="formRow">
-      <label for="describeTextBoxSolution">Solution:</label><br>
+      <label for="describeTextBoxSolution" class="localizedText solutionLabel"></label><br>
       <textarea rows="10" cols="100" id="describeTextBoxSolution"></textarea>
     </div>
     <div class="formRow">
-      <label for="imgTextBox">Image URL:</label>
-      <input type="text" id="imgTextBox" placeholder="URL:"><br>
+      <label for="imgTextBox" class="localizedText imageLabel"></label>
+      <input type="text" id="imgTextBox" class="localizedPlaceholder imagePlaceholder"><br>
     </div>
     <div class="formRowButtons">
-      <input type="submit" class="formButtons" id="submitAddButton" value="Apply">
-      <input type="button" class="formButtons" id="cancelAddRiddle" value="Cancel">
+      <input type="submit" class="formButtons localizedValue applyButton" id="submitAddButton">
+      <input type="button" class="formButtons localizedValue cancelButton" id="cancelAddRiddle">
     </div>
   </form>
 </body>
+
 </html>

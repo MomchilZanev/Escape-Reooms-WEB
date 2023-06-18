@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
   <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
   <link rel="stylesheet" href="../css/importRoom.css" type="text/css">
   <script defer src="../scripts/front-end/showRiddles.js"></script>
   <script defer src="../scripts/front-end/modifyRoom.js"></script>
 </head>
+
 <body>
   <form class="ImportContainer">
-    <div class="formRowButtons"> 
-      <input type="file" id="uploadFile" name="uploadFile" value="Browse...">
+    <div class="formRowButtons">
+      <input type="file" id="uploadFile" name="uploadFile">
     </div>
     <div class="formRowButtons">
-      <input type="button" id="addRemoveRiddle" value="Add/Remove riddle">
-      <input type="submit" id="submitImportButton" value="Import">
+      <input type="button" class="localizedValue addRemoveRiddlesButton" id="addRemoveRiddle">
+      <input type="submit" class="localizedValue importButton" id="submitImportButton">
     </div>
   </form>
 
-  <h2 id="titleAddedRiddles"> Current riddles: </h2>
+  <h2 id="titleAddedRiddles" class="localizedText currentRiddlesTitle"></h2>
   <div class="objectContainer">
     <div class="objectBox">
       <a><img src="../images/example.jpg" title="Title1"></a>
@@ -42,4 +44,5 @@
 </body>
 
 </body>
+
 </html>
