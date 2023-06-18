@@ -27,7 +27,7 @@ class RiddleService
 
     public function importFromObj($object, $roomId = null)
     {
-        if (!array_is_list($object)) {
+        if (!is_array($object)) {
             $object = array($object);
         }
 
