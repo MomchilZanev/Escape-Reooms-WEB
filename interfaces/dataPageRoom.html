@@ -5,15 +5,17 @@
 <head>
   <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
   <link rel="stylesheet" href="../css/dataPage.css">
+  <script defer src="../scripts/back-end/exportDataPage.js"></script>
+  <script src="../scripts/back-end/createObject.js"></script>
   <script defer src="../scripts/front-end/showRiddles.js"></script>
   <script defer src="../scripts/front-end/dataRoom.js"></script>
 </head>
 
 <body>
   <div class="dataContainer">
-    <h1 class="dataTitle"> Title1 </h1>
+    <h1 class="dataTitle">unknown</h1>
     <div id="dataOneObjectContainer">
-      <img src="../images/example.jpg" id="dataImage" title="Title1">
+      <img id="dataImage">
       <div class="metadataContainer">
         <div class="metadata" id="metadataLanguage">
           <p class="localizedText filterLanguage"></p>
@@ -38,26 +40,7 @@
       </div>
     </div>
     <h1 class="dataTitle localizedText riddlePageTitle"></h1>
-    <div class="objectContainer">
-      <div class="objectBox">
-        <a id="1"><img src="../images/example.jpg" title="Title1"></a>
-      </div>
-      <div class="objectBox">
-        <a id="2"><img src="../images/example.jpg" title="Title1"></a>
-      </div>
-      <div class="objectBox">
-        <a id="3"><img src="../images/example.jpg" title="Title1"></a>
-      </div>
-      <div class="objectBox">
-        <a id="4"><img src="../images/example.jpg" title="Title1"></a>
-      </div>
-      <div class="objectBox">
-        <a id="5"><img src="../images/example.jpg" title="Title1"></a>
-      </div>
-      <div class="objectBox">
-        <a id="7"><img src="../images/example.jpg" title="Title1"></a>
-      </div>
-    </div>
+    <div class="objectContainer" id="dataPageObjectContainer"></div>
     <div class="formRow">
       <input type="button" class="localizedValue exportButton" id="exportRoom">
       <input type="button" class="localizedValue updateButton" id="updateRoom">

@@ -67,8 +67,11 @@ function setLocalizedPlaceholders(localizedElements) {
 		var classes = localizedElements[i].className.split(" ");
 		var j = classes.indexOf("localizedPlaceholder");
 		if (j >= 0) {
-			var message = classes[j+1];
-			localizedElements[i].placeholder = window.localizationResources[message];
+			const message = classes[j+1];
+			const placeholderText = window.localizationResources[message];
+			if ( placeholderText !== null && placeholderText !== undefined ) {
+				localizedElements[i].placeholder = window.localizationResources[message];
+			}
 		}
 	}
 }

@@ -1,3 +1,5 @@
+exportDataRiddle();
+
 var updateRiddle = document.getElementById("updateRiddle");
 var deleteRiddle = document.getElementById("deleteRiddle");
 

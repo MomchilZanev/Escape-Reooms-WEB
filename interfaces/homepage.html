@@ -4,23 +4,30 @@
 <head>
   <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
   <link rel="stylesheet" href="../css/filterContainer.css" type="text/css">
-  <script defer src="../scripts/front-end/homepage.js"></script>
+  <script src="../scripts/helpers/fetchApiUtility.js"></script>
+  <script src="../scripts/helpers/helperFunctions.js"></script>
+  <script src="../scripts/back-end/createObject.js"></script>
+  <script defer src="../scripts/back-end/exportHomePage.js"></script>
 </head>
 
 <body>
   <div class="FilterContainer">
     <div class="FilterBy">
-      <form>
+      <form id="filterForm">
         <div class="formRow">
           <label for="langTextBox" class="localizedText filterLanguage"></label>
           <input type="text" id="langTextBox" class="localizedPlaceholder langEN"><br>
         </div>
         <div class="formRow">
-          <label for="difficultyMin" class="localizedText filterDifficulty"></label><br>
-          <input type="text" class="numTextBox localizedPlaceholder min" id="difficultyMin">
+          <label for="nameTextBox" class="localizedText filterSearch"></label><br>
+          <input type="text" class="searchTextBox" id="nameTextBox">
+        </div>
+        <div class="formRow">
+          <label for="minDifficulty" class="localizedText filterDifficulty"></label><br>
+          <input type="text" class="numTextBox localizedPlaceholder min" id="minDifficulty">
 
-          <label for="difficultyMax" class="localizedText filterDifficulty" hidden></label>
-          <input type="text" class="numTextBox localizedPlaceholder max" id="difficultyMax"><br>
+          <label for="maxDifficulty" class="localizedText filterDifficulty" hidden></label>
+          <input type="text" class="numTextBox localizedPlaceholder max" id="maxDifficulty"><br>
         </div>
         <div class="formRow">
           <label for="minTimeLimit" class="localizedText filterTimeLimit"></label><br>
@@ -35,24 +42,8 @@
           <input type="text" class="numTextBox localizedPlaceholder max" id="maxPlayers"><br>
         </div>
         <div class="filterButtons">
-          <input type="submit" class="formButtons localizedValue filterSubmit" id="submitFilterButton">
-          <input type="button" class="formButtons localizedValue filterClear" id="cancelFilterButton">
-        </div>
-      </form>
-    </div>
-    <div class="FilterBy">
-      <form>
-        <div class="formRow">
-          <label for="langTextBox" class="localizedText filterLanguage"></label>
-          <input type="text" id="langTextBox" class="localizedPlaceholder langEN"><br>
-        </div>
-        <div class="formRow">
-          <label for="difficultyMin" class="localizedText filterSearch"></label><br>
-          <input type="text" class="searchTextBox">
-        </div>
-        <div class="filterButtons">
-          <input type="submit" class="formButtons localizedValue filterSearchSubmit" id="submitFilterButton">
-          <input type="button" class="formButtons localizedValue filterClear" id="cancelFilterButton">
+          <input type="button" class="formButtons localizedValue filterSubmit" id="submitFilterButton">
+          <input type="button" class="formButtons localizedValue filterClear" id="clearFilterButton">
         </div>
       </form>
     </div>
@@ -60,44 +51,7 @@
       <button id="ExportHomepageRooms" class="exportRelated localizedText exportRooms"></button>
     </div>
   </div>
-  <div class="objectContainer">
-    <div class="objectBox">
-      <a id="1"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="2"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="3"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="4"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="5"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="6"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="7"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="8"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="9"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="10"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="11"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-    <div class="objectBox">
-      <a id="12"><img src="../images/example.jpg" title="Title1"></a>
-    </div>
-  </div>
+  <div class="objectContainer" id="homepageObjectContainer"></div>
 
 
 </body>

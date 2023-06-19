@@ -7,11 +7,12 @@ window.localizationResources = {
     addRoomPageTitle: "Add Room",
     addRiddlePageTitle: "Add Riddle",
     documentationPageTitle: "Documentation",
-    filterSearch: "Search:",
+    filterSearch: "Name:",
     filterLanguage: "Language:",
     filterDifficulty: "Difficulty:",
     filterTimeLimit: "Time to Solve (min):",
-    filterPlayers: "Players:",    
+    filterPlayers: "Players:",
+    IntPlaceholder: "Integer",    
     filterSubmit: "Filter",
     filterClear: "Clear",
     filterSearchSubmit: "Search",
@@ -39,5 +40,6 @@ window.localizationResources = {
     importRiddlesTitle: "Import Riddle(s)",
     browsePlaceholder: "Browse...",
     minPlayersLabel: "Minimum Players:",
-    maxPlayersLabel: "Maximum Players:"
+    maxPlayersLabel: "Maximum Players:",
+    titlePlaceholder: "Name:"
 };

@@ -5,9 +5,14 @@
 <head>
   <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
   <link rel="stylesheet" href="../css/import.css" type="text/css">
-  <script defer src="../scripts/front-end/showRiddles.js"></script>
-  <script defer src="../scripts/front-end/modifyRoom.js"></script>
+
+  <script src="../scripts/helpers/fetchApiUtility.js"></script>
+  <script src="../scripts/helpers/helperFunctions.js"></script>
+  <script defer src="../scripts/back-end/import.js"></script>
+  
 </head>
+
+<meta charset="utf-8">
 
 <body>
 
@@ -17,7 +22,7 @@
       <input type="file" id="uploadRoomsFile" name="uploadRoomsFile">
     </div>
     <div class="formRowButtons">
-      <input type="submit" class="formButtons localizedValue importButton" id="submitImportButtonRoom">
+      <input type="button" class="formButtons localizedValue importButton" id="importRoomButton">
     </div>
   </form>
 
@@ -27,7 +32,7 @@
       <input type="file" id="uploadRiddlesFile" name="uploadRiddlesFile">
     </div>
     <div class="formRowButtons">
-      <input type="submit" class="formButtons localizedValue importButton" id="submitImportButtonRiddle">
+      <input type="button" class="formButtons localizedValue importButton" id="importRiddleButton">
     </div>
   </form>
 </body>

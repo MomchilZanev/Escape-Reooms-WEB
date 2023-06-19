@@ -1,3 +1,5 @@
+exportDataRoom();
+
 var updateButton = document.getElementById("updateRoom");
 var deleteButton = document.getElementById("deleteRoom");
 
