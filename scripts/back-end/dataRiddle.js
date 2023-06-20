@@ -6,30 +6,29 @@ var exportButton = document.getElementById("exportRiddle");
 var riddleId = document.getElementById('metadataIdValue').textContent;
 console.log(riddleId);
 
-exportButton.addEventListener('click', async function() {
+exportButton.addEventListener('click', async function () {
   const roomId = document.getElementById('metadataIdValue').textContent;
   const language = document.getElementById('metadataLanguageValue').textContent;
-  var data = await fetchGet("riddleController", "getRiddleDetails", { language: language, export: blobCallback, id: roomId}, blobCallback);
-  downloadFile(data, "all-escape-rooms", "json");
+  var data = await fetchGet("riddleController", "getRiddleDetails", { language: language, export: blobCallback, id: roomId }, blobCallback);
+  downloadFile(data, "riddle", "json");
 });
 
-updateRiddle.addEventListener('click', function() {
+updateRiddle.addEventListener('click', function () {
   window.location = 'updateRiddle.html';
 });
 
-deleteButton.addEventListener('click', async function() {
+deleteButton.addEventListener('click', async function () {
   if (confirm('Are you sure you want to delete this riddle?')) {
-    var riddles = JSON.parse(sessionStorage.getItem("riddles"));
 
-    var removeDeletedRiddle = riddles.filter(function(item){
-      return riddleId != item.id;         
+    var room = JSON.parse(sessionStorage.getItem("objectRoom"));
+    room.riddles = room.riddles.filter(function (item) {
+      return riddleId != item.id;
     });
-
-    sessionStorage.setItem("riddles", JSON.stringify(removeDeletedRiddle));
+    sessionStorage.setItem("objectRoom", JSON.stringify(room));
 
     await fetchPost("riddleController", "deleteRiddle", { id: Number(riddleId) });
-    window.location=document.referrer;
+    window.location = document.referrer;
   } else {
-      return false;
+    return false;
   }
 });
