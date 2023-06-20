@@ -55,6 +55,8 @@ class EscapeRoomService
                     return false;
                 }
             }
+
+            return true;
         }
     }
 
@@ -77,7 +79,18 @@ class EscapeRoomService
             $object['image']
         );
 
-        return $this->addRoom($room);
+        if (!$this->addRoom($room)) {
+            return false;
+        }
+
+        $riddles = $object['riddles'];
+        if ($riddles) {
+            if (!$this->riddleService->importFromObj($riddles, $room->id)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     private function addRoom($room)
