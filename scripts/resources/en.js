@@ -41,5 +41,6 @@ window.localizationResources = {
     browsePlaceholder: "Browse...",
     minPlayersLabel: "Minimum Players:",
     maxPlayersLabel: "Maximum Players:",
-    titlePlaceholder: "Name:"
+    titlePlaceholder: "Name:",
+    askingExport: "Export in file?"
 };

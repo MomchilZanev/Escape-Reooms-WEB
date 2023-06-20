@@ -178,7 +178,7 @@ function testDeleteRoomRiddleQuery()
 
 function dbTests()
 {
-    // testInsertRoomQuery();
+    testInsertRoomQuery();
     // testInsertRiddleQuery();
     // testInsertRoomRiddleQuery();
     // testSelectRoomQuery();

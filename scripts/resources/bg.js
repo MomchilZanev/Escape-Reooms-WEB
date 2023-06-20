@@ -41,5 +41,6 @@ window.localizationResources = {
     browsePlaceholder: "Търси...",
     minPlayersLabel: "Минимален Брой Играчи:",
     maxPlayersLabel: "Максимален Брой Играчи:",
-    titlePlaceholder: "Име:"
+    titlePlaceholder: "Име:",
+    askingExport: "Експортиране във файл?"
 };

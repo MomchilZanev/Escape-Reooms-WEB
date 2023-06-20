@@ -60,18 +60,5 @@ async function addAddButtons(allRiddles, riddles) {
   }
 }
 
-const SaveButton = document.getElementById("submitButton");
-const cancelButton = document.getElementById("cancelButton");
-
-SaveButton.addEventListener('click', function() {
-  sessionStorage.setItem("originRiddles", sessionStorage.getItem('riddles'));
-  window.location = 'addNewRoom.html';
-});
-
-cancelButton.addEventListener('click', function() {
-  sessionStorage.setItem("riddles", sessionStorage.getItem('originRiddles'));
-  window.location = 'addNewRoom.html';
-});
-
 
 

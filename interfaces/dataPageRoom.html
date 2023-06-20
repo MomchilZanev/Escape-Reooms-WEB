@@ -5,10 +5,12 @@
 <head>
   <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
   <link rel="stylesheet" href="../css/dataPage.css">
-  <script defer src="../scripts/back-end/exportDataPage.js"></script>
+  <script defer src="../scripts/back-end/dataPage.js"></script>
+  <script src="../scripts/helpers/fetchApiUtility.js"></script>
+  <script src="../scripts/helpers/helperFunctions.js"></script>
   <script src="../scripts/back-end/createObject.js"></script>
   <script defer src="../scripts/front-end/showRiddles.js"></script>
-  <script defer src="../scripts/front-end/dataRoom.js"></script>
+  <script defer src="../scripts/back-end/dataRoom.js"></script>
 </head>
 
 <body>
@@ -36,6 +38,9 @@
         <div class="metadata" id="metadataMaxPlayers">
           <p class="localizedText maxPlayersLabel"></p>
           <p id="metadataMaxPlayersValue">unknown</p>
+        </div>
+        <div class="metadata" id="metadataId">
+          <p id="metadataIdValue" hidden>unknown</p>
         </div>
       </div>
     </div>

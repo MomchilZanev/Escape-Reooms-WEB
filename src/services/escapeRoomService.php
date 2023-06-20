@@ -30,7 +30,7 @@ class EscapeRoomService
 
     private function importFromObj($object)
     {
-        if (!is_array($object)) {
+        if (!array_is_list($object)) {
             $object = array($object);
         }
 

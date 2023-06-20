@@ -3,10 +3,12 @@ var importRiddleButton = document.getElementById('importRiddleButton');
 
 importRoomButton.addEventListener('click', function() {
   readFile("uploadRoomsFile", importRoomsHelper);
+  window.location = 'homepage.html';
 });
 
 importRiddleButton.addEventListener('click', function() {
   readFile("uploadRiddlesFile", importRiddlesHelper);
+  window.location = 'homepage.html';
 });
 
 function importRoomsHelper(fileContents) {

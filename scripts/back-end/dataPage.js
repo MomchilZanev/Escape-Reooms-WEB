@@ -1,9 +1,8 @@
-function exportDataRoom() {
+function loadDataRoom() {
   objectString = sessionStorage.getItem("objectRoom");
   const object = JSON.parse(objectString);
 
   var objectTitle = document.getElementsByClassName('dataTitle')[0];
-  console.log(objectTitle);
   objectTitle.textContent = object.name;
   var imageTag = document.getElementById('dataImage');
   imageTag.src = object.image;
@@ -13,11 +12,12 @@ function exportDataRoom() {
   createMetadata(object.timeLimit, 'TimeLimit');
   createMetadata(object.minPlayers, 'MinPlayers');
   createMetadata(object.maxPlayers, 'MaxPlayers');
+  createMetadata(object.id, 'Id');
 
   createGetObjects(object.riddles, 'riddles', 'dataPageObjectContainer');
 }
 
-function exportDataRiddle() {
+function loadDataRiddle() {
   var objectString = sessionStorage.getItem("objectRiddle");
   const object = JSON.parse(objectString);
   
@@ -28,6 +28,7 @@ function exportDataRiddle() {
   createMetadata(object.type, 'Type');
   createMetadata(object.task, 'Problem');
   createMetadata(object.solution, 'Solution');
+  createMetadata(object.id, 'Id');
 }
 
 

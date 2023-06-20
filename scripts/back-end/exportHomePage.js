@@ -12,6 +12,7 @@ async function getAllRooms(exportParam = false) {
   }
 }
 
+objectContainer.innerHTML = "";
 getAllRooms();
 
 var clearFilterButton = document.getElementById("clearFilterButton");
@@ -50,9 +51,38 @@ submitFilterButton.addEventListener('click', async function() {
   constraints["maxPlayers"] = document.getElementById('maxPlayers').value;
   }
 
-  constraints["export"] = jsonCallback;
+  var askingExport = document.querySelector('input[name="export"]:checked').value;
 
-  var data = await fetchGet("escapeRoomController", "filterRooms", constraints, jsonCallback);
-  objectContainer.innerHTML = "";
-  createGetObjects(data, 'rooms', 'homepageObjectContainer');
+  constraints["export"] = askingExport == 'Yes' ? blobCallback : jsonCallback;
+  console.log(constraints["export"]);
+
+  var data = await fetchGet("escapeRoomController", "filterRooms", constraints, constraints["export"]);
+  if (askingExport == "Yes") {
+    downloadFile(data, "filtered-escape-rooms", "json");
+  } else {
+    objectContainer.innerHTML = "";
+    createGetObjects(data, 'rooms', 'homepageObjectContainer');
+  }
 });
+
+var ExportHomepageRooms = document.getElementById("ExportHomepageRooms");
+ExportHomepageRooms.addEventListener('click', function() {
+  getAllRooms(true);
+});
+
+sessionStorage.setItem('tempRoom', JSON.stringify(setTempRoomValues()));
+console.log(sessionStorage.getItem('tempRoom'));
+
+function setTempRoomValues() {
+  var tempItems = {};
+  tempItems.language = '';
+  tempItems.timeLimit = '';
+  tempItems.minPlayers = '';
+  tempItems.maxPlayers = '';
+  tempItems.name = '';
+  tempItems.image = '';
+  tempItems.difficulty = '';
+  tempItems.id = '';
+  tempItems.riddles = [];
+  return tempItems;
+}

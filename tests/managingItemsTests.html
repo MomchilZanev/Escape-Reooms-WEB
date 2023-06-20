@@ -94,7 +94,7 @@
     }
 
     async function testDeleteRoom() {
-        var roomToDeleteId = 3;
+        var roomToDeleteId = 17;
         await fetchPost("escapeRoomController", "deleteRoom", { id: roomToDeleteId });
     }
 </script>
@@ -126,7 +126,7 @@
 
     async function testUpdateRiddle() {
         var riddleToUpdate = {
-            id: 3,
+            id: 2,
             type: "colors",
             language: "en",
             task: "New riddle task",

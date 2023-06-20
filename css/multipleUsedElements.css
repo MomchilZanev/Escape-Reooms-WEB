@@ -93,7 +93,7 @@ input::placeholder, textarea::placeholder {
 }
 
 textarea {
-  resize: none;
+  width: 80%;
 }
 
 .formButtons {
