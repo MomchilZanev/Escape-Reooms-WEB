@@ -20,7 +20,7 @@ window.localizationResources = {
     filterSearchSubmit: "Търси",
     min: "Мин:",
     max: "Макс:",
-    exportRooms: "Експортирай Стаи",
+    exportRooms: "Експортирай Всички Стаи",
     typeLabel: "Тип:",
     problemLabel: "Задача:",
     solutionLabel: "Решение:",

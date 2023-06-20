@@ -55,8 +55,6 @@ class EscapeRoomService
                     return false;
                 }
             }
-
-            return true;
         }
     }
 
