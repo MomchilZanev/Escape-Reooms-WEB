@@ -57,12 +57,28 @@
     async function testAddRoom() {
         var roomToAdd = {
             language: "en",
-            name: "Very new escape room",
+            name: "Very new escape room 2",
             difficulty: 3,
             timeLimit: 45,
             minPlayers: 1,
             maxPlayers: 1,
-            image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg"
+            image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg",
+            riddles: [
+                {
+                    "type": "rebus",
+                    "language": "en",
+                    "task": "Test Adding Riddle",
+                    "solution": "Test Adding Riddle",
+                    "image": "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-2.jpg"
+                },
+                {
+                    "type": "colors",
+                    "language": "en",
+                    "task": "Test Adding Riddle 2",
+                    "solution": "Test Adding Riddle 2",
+                    "image": "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-4.jpg"
+                }
+            ]
         };
 
         await fetchPost("escapeRoomController", "addRoom", { roomJson: roomToAdd });
