@@ -10,8 +10,8 @@ async function getAllRiddles() {
   }
 
   var allRiddles = await fetchGet("riddleController", "getAllRiddles", { language: "en", export: jsonCallback }, jsonCallback);
-  var filterAllRiddles = allRiddles.filter(function(item){
-    return !riddles_id.has(item.id);         
+  var filterAllRiddles = allRiddles.filter(function (item) {
+    return !riddles_id.has(item.id);
   });
 
   createGetObjects(filterAllRiddles, 'riddles', 'toAddObjectContainer');
@@ -29,10 +29,10 @@ function addDeleteButtons(riddles) {
     deleteButton.textContent = "Delete";
     listObjectBoxes[i].appendChild(deleteButton);
 
-    deleteButton.addEventListener('click', function() {
+    deleteButton.addEventListener('click', function () {
       var deleteId = this.parentNode.children[0].id;
-      var getRiddle = riddles.filter(function(item){
-        return deleteId != item.id;         
+      var getRiddle = riddles.filter(function (item) {
+        return deleteId != item.id;
       });
       sessionStorage.setItem("riddles", JSON.stringify(getRiddle));
     });
@@ -41,17 +41,17 @@ function addDeleteButtons(riddles) {
 
 async function addAddButtons(allRiddles, riddles) {
   const listObjectBoxes = document.querySelectorAll('#toAddRiddlesContainer .objectContainer .objectBox');
-  
+
   for (var i = 0; i < listObjectBoxes.length; i++) {
     var addButton = document.createElement('button');
     addButton.className = "addAndDelete localizedText addButton";
     addButton.textContent = "Add";
     listObjectBoxes[i].appendChild(addButton);
 
-    addButton.addEventListener('click', function() {
+    addButton.addEventListener('click', function () {
       var addId = this.parentNode.children[0].id;
-      var getRiddle = allRiddles.filter(function(item){
-        return addId == item.id;         
+      var getRiddle = allRiddles.filter(function (item) {
+        return addId == item.id;
       });
 
       riddles.push(getRiddle[0]);
@@ -59,6 +59,3 @@ async function addAddButtons(allRiddles, riddles) {
     });
   }
 }
-
-
-

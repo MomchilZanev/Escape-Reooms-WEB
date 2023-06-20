@@ -19,7 +19,7 @@ maxPlayersTextBox.value = tempItems.maxPlayers;
 nameTextBox.value = tempItems.name;
 imageTextBox.value = tempItems.image;
 difficultyTextBox.value = tempItems.difficulty;
-var riddlesId = tempItems.id;
+var roomId = tempItems.id;
 
 if (tempItems.riddles == null) {
   tempItems.riddles = [];
@@ -33,8 +33,8 @@ addRemoveRiddles.addEventListener('click', function() {
 });
 
 submitUpdateButton.addEventListener('click', async function() {
-  var roomToAdd = {
-    id: riddlesId,
+  var roomToUpdate = {
+    id: roomId,
     language: document.getElementById('langTextBox').value,
     name: document.getElementById('nameTextBox').value,
     difficulty: document.getElementById('difficulty').value,
@@ -42,10 +42,10 @@ submitUpdateButton.addEventListener('click', async function() {
     minPlayers: document.getElementById('minPlayers').value,
     maxPlayers: document.getElementById('maxPlayers').value,
     image: document.getElementById('imgTextBox').value,
-    riddles: JSON.stringify(tempItems.riddles)
+    riddleIds: tempItems.riddles.map(r => r.id)
   };
 
-  await fetchPost("escapeRoomController", "updateRoom", { roomJson: roomToAdd });
+  await fetchPost("escapeRoomController", "updateRoom", { roomJson: roomToUpdate });
   sessionStorage.setItem("tempItems", null);
   window.location = 'homepage.html';
 });
@@ -64,5 +64,5 @@ function setTempValues() {
   tempItems.name = nameTextBox.value;
   tempItems.image = imageTextBox.value;
   tempItems.difficulty = difficultyTextBox.value;
-  tempItems.id = riddlesId;
+  tempItems.id = roomId;
 }

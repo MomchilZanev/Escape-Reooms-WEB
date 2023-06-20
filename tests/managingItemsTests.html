@@ -63,22 +63,7 @@
             minPlayers: 1,
             maxPlayers: 1,
             image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg",
-            riddles: [
-                {
-                    "type": "rebus",
-                    "language": "en",
-                    "task": "Test Adding Riddle",
-                    "solution": "Test Adding Riddle",
-                    "image": "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-2.jpg"
-                },
-                {
-                    "type": "colors",
-                    "language": "en",
-                    "task": "Test Adding Riddle 2",
-                    "solution": "Test Adding Riddle 2",
-                    "image": "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-4.jpg"
-                }
-            ]
+            riddleIds: [ 1, 2 ]
         };
 
         await fetchPost("escapeRoomController", "addRoom", { roomJson: roomToAdd });
@@ -93,7 +78,8 @@
             timeLimit: 60,
             minPlayers: 1,
             maxPlayers: 2,
-            image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg"
+            image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg",
+            riddleIds: [ 3, 4 ]
         };
 
         await fetchPost("escapeRoomController", "updateRoom", { roomJson: roomToUpdate });

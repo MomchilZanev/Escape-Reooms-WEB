@@ -1,4 +1,6 @@
 window.localizationResources = {
+    yes: "Yes",
+    no: "No",
     langEN: "EN",
     langBG: "BG",
     homePageTitle: "Home Page",

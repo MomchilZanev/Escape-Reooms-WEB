@@ -10,7 +10,6 @@ var difficultyTextBox = document.getElementById('difficulty');
 var nameTextBox = document.getElementById('nameTextBox');
 
 var tempItems = JSON.parse(sessionStorage.getItem("tempRoom"));
-console.log
 
 languageTextBox.value = tempItems.language;
 timeLimitTextBox.value = tempItems.timeLimit;
@@ -19,7 +18,7 @@ maxPlayersTextBox.value = tempItems.maxPlayers;
 nameTextBox.value = tempItems.name;
 imageTextBox.value = tempItems.image;
 difficultyTextBox.value = tempItems.difficulty;
-var riddlesId = tempItems.id;
+var roomId = tempItems.id;
 
 addRemoveRiddles.addEventListener('click', function() {
   sessionStorage.setItem("riddles", JSON.stringify(tempItems.riddles));
@@ -29,6 +28,7 @@ addRemoveRiddles.addEventListener('click', function() {
 });
 
 addButton.addEventListener('click', async function() {
+  debugger;
   var roomToAdd = {
     language: document.getElementById('langTextBox').value,
     name: document.getElementById('nameTextBox').value,
@@ -37,7 +37,7 @@ addButton.addEventListener('click', async function() {
     minPlayers: document.getElementById('minPlayers').value,
     maxPlayers: document.getElementById('maxPlayers').value,
     image: document.getElementById('imgTextBox').value,
-    riddles: JSON.stringify(tempItems.riddles)
+    riddleIds: tempItems.riddles.map(r => r.id)
   };
 
   await fetchPost("escapeRoomController", "addRoom", { roomJson: roomToAdd });
@@ -58,5 +58,5 @@ function setTempValues() {
   tempItems.name = nameTextBox.value;
   tempItems.image = imageTextBox.value;
   tempItems.difficulty = difficultyTextBox.value;
-  tempItems.id = riddlesId;
+  tempItems.id = roomId;
 }

@@ -83,14 +83,8 @@ class EscapeRoomService
             return false;
         }
 
-        $riddles = $object['riddles'];
-        if ($riddles) {
-            if (!$this->riddleService->importFromObj($riddles, $room->id)) {
-                return false;
-            }
-        }
-        
-        return true;
+        $riddleIds = $object['riddleIds'];
+        return $this->addExistingRiddlesToRoom($room, $riddleIds);
     }
 
     private function addRoom($room)
@@ -134,8 +128,13 @@ class EscapeRoomService
             $object['maxPlayers'],
             $object['image']
         );
+        if (!$this->updateRoom($room)) {
+            return false;
+        }
 
-        return $this->updateRoom($room);
+        $this->deleteAllRiddlesInRoom($room);
+        $riddleIds = $object['riddleIds'];
+        return $this->addExistingRiddlesToRoom($room, $riddleIds);
     }
 
     private function updateRoom($room)
@@ -156,6 +155,46 @@ class EscapeRoomService
 
         if ($result['success']) {
             return $this->translateRoom($room);
+        }
+
+        return false;
+    }
+
+    private function addExistingRiddlesToRoom($room, $riddleIds)
+    {
+        if (!array_is_list($riddleIds)) {
+            return false;
+        }
+
+        foreach ($riddleIds as $riddleId) {
+            if (!$this->riddleService->addRoomRiddle($room->id, $riddleId)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function deleteAllRiddlesInRoom($room)
+    {
+        if (!$this->roomExists($room->id)) {
+            echo 'Escape room does not exist';
+            return;
+        }
+
+        $result = $this->db->selectRoomRiddlesByRoomQuery($room->id);
+
+        if ($result['success']) {
+            $roomRiddles = $result['data'];
+            if (!array_is_list($roomRiddles)) {
+                return false;
+            }
+
+            foreach ($roomRiddles as $roomRiddle) {
+                $this->riddleService->deleteRoomRiddle($roomRiddle['roomId'], $roomRiddle['riddleId']);
+            }
+
+            return true;
         }
 
         return false;

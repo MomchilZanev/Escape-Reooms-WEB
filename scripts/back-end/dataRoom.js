@@ -5,11 +5,10 @@ var deleteButton = document.getElementById("deleteRoom");
 var exportButton = document.getElementById("exportRoom");
 var roomId = document.getElementById('metadataIdValue').textContent;
 
-exportButton.addEventListener('click', async function() {
-  
+exportButton.addEventListener('click', async function() {  
   const language = document.getElementById('metadataLanguageValue').textContent;
   var data = await fetchGet("escapeRoomController", "getRoomDetails", { language: language, export: blobCallback, id: roomId}, blobCallback);
-  downloadFile(data, "all-escape-rooms", "json");
+  downloadFile(data, "escape-room", "json");
 });
 
 updateButton.addEventListener('click', function() {

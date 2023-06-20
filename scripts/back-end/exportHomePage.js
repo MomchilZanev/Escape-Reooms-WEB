@@ -5,7 +5,7 @@ async function getAllRooms(exportParam = false) {
   var data = await fetchGet("escapeRoomController", "getAllRooms", { language: "en", export: exportParam }, callback);
 
   if (exportParam) {
-      downloadFile(data, "all-escape-rooms", "json");
+    downloadFile(data, "all-escape-rooms", "json");
   }
   else {
     createGetObjects(data, 'rooms', 'homepageObjectContainer');
@@ -18,13 +18,13 @@ getAllRooms();
 var clearFilterButton = document.getElementById("clearFilterButton");
 var submitFilterButton = document.getElementById("submitFilterButton");
 
-clearFilterButton.addEventListener('click', function() {
+clearFilterButton.addEventListener('click', function () {
   document.getElementById("filterForm").reset();
   objectContainer.innerHTML = "";
   getAllRooms();
 });
 
-submitFilterButton.addEventListener('click', async function() {
+submitFilterButton.addEventListener('click', async function () {
   constraints = {};
   if (document.getElementById('langTextBox').value != '') {
     constraints["language"] = document.getElementById('langTextBox').value;
@@ -45,10 +45,10 @@ submitFilterButton.addEventListener('click', async function() {
     constraints["maxTimeLimit"] = document.getElementById('maxTimeLimit').value;
   }
   if (document.getElementById('minPlayers').value != '') {
-  constraints["minPlayers"] = document.getElementById('minPlayers').value;
+    constraints["minPlayers"] = document.getElementById('minPlayers').value;
   }
   if (document.getElementById('maxPlayers').value != '') {
-  constraints["maxPlayers"] = document.getElementById('maxPlayers').value;
+    constraints["maxPlayers"] = document.getElementById('maxPlayers').value;
   }
 
   var askingExport = document.querySelector('input[name="export"]:checked').value;
@@ -65,8 +65,8 @@ submitFilterButton.addEventListener('click', async function() {
   }
 });
 
-var ExportHomepageRooms = document.getElementById("ExportHomepageRooms");
-ExportHomepageRooms.addEventListener('click', function() {
+var ExportHomepageRooms = document.getElementById("exportHomepageRooms");
+ExportHomepageRooms.addEventListener('click', function () {
   getAllRooms(true);
 });
 
