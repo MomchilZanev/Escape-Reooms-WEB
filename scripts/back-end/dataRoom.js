@@ -19,7 +19,6 @@ updateButton.addEventListener('click', function() {
 deleteButton.addEventListener('click', async function() {
   if (confirm('Are you sure you want to delete this room?')) {
     await fetchPost("escapeRoomController", "deleteRoom", { id: Number(roomId) });
-    console.log(roomId);
     window.location='homepage.html';
   } else {
       return false;

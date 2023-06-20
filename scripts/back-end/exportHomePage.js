@@ -2,7 +2,7 @@ const objectContainer = document.getElementById('homepageObjectContainer');
 
 async function getAllRooms(exportParam = false) {
   var callback = exportParam ? blobCallback : jsonCallback;
-  var data = await fetchGet("escapeRoomController", "getAllRooms", { language: "en", export: exportParam }, callback);
+  var data = await fetchGet("escapeRoomController", "getAllRooms", { language: getCookie("language") ?? "en", export: exportParam }, callback);
 
   if (exportParam) {
     downloadFile(data, "all-escape-rooms", "json");
@@ -25,7 +25,9 @@ clearFilterButton.addEventListener('click', function () {
 });
 
 submitFilterButton.addEventListener('click', async function () {
-  constraints = {};
+  constraints = {
+    language: getCookie("language") ?? "en"
+  };
   if (document.getElementById('langTextBox').value != '') {
     constraints["language"] = document.getElementById('langTextBox').value;
   }
@@ -54,7 +56,6 @@ submitFilterButton.addEventListener('click', async function () {
   var askingExport = document.querySelector('input[name="export"]:checked').value;
 
   constraints["export"] = askingExport == 'Yes' ? blobCallback : jsonCallback;
-  console.log(constraints["export"]);
 
   var data = await fetchGet("escapeRoomController", "filterRooms", constraints, constraints["export"]);
   if (askingExport == "Yes") {
@@ -71,7 +72,6 @@ ExportHomepageRooms.addEventListener('click', function () {
 });
 
 sessionStorage.setItem('tempRoom', JSON.stringify(setTempRoomValues()));
-console.log(sessionStorage.getItem('tempRoom'));
 
 function setTempRoomValues() {
   var tempItems = {};

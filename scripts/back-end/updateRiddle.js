@@ -32,7 +32,6 @@ submitUpdateRiddle.addEventListener('click', async function() {
       image: imageTextBox.value
     };
 
-    console.log(JSON.stringify(riddleToUpdate));
     sessionStorage.setItem("objectRiddle", JSON.stringify(riddleToUpdate));
     await fetchPost("riddleController", "updateRiddle", { riddleJson: riddleToUpdate });
     window.location=document.referrer;

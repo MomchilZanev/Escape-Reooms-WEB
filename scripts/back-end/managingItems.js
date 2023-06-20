@@ -6,7 +6,6 @@ async function testGetRoomDetails(exportParam = false) {
       downloadFile(data, "escape-room-details", "json");
   }
   else {
-      console.log(data);
   }
 }
 

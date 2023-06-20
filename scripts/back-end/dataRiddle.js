@@ -4,7 +4,6 @@ var updateRiddle = document.getElementById("updateRiddle");
 var deleteButton = document.getElementById("deleteRiddle");
 var exportButton = document.getElementById("exportRiddle");
 var riddleId = document.getElementById('metadataIdValue').textContent;
-console.log(riddleId);
 
 exportButton.addEventListener('click', async function () {
   const roomId = document.getElementById('metadataIdValue').textContent;

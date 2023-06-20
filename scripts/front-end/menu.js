@@ -25,6 +25,9 @@ for (var i = 0; i < listItems.length; i++) {
 			}
 		}
 
+		sessionStorage.clear(); // Sanitizing the session storage when navigating between the major pages
+		sessionStorage.setItem('tempRoom', JSON.stringify(setTempRoomValues()));
+
 		openContent(this.children[0].id + '.html');
 	});
 }
@@ -43,3 +46,17 @@ function openContent(filename) {
 document.addEventListener("DOMContentLoaded", function () {
 	openContent('homepage.html');
 });
+
+function setTempRoomValues() {
+	var tempItems = {};
+	tempItems.language = '';
+	tempItems.timeLimit = '';
+	tempItems.minPlayers = '';
+	tempItems.maxPlayers = '';
+	tempItems.name = '';
+	tempItems.image = '';
+	tempItems.difficulty = '';
+	tempItems.id = '';
+	tempItems.riddles = [];
+	return tempItems;
+  }
