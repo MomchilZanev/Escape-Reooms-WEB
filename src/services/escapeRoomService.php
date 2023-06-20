@@ -313,6 +313,7 @@ class EscapeRoomService
             $translation = $this->db->selectRoomTranslationsQuery($dbRecord['id'])['data'][0];
         }
 
+        $image = isset($dbRecord['image']) && $dbRecord['image'] !== '' ? $dbRecord['image'] : "/escaperooms/images/no-image-available.jpg";
         $room = new EscapeRoom(
             $dbRecord['id'],
             $translation['name'],
@@ -321,7 +322,7 @@ class EscapeRoomService
             $dbRecord['timeLimit'],
             $dbRecord['minPlayers'],
             $dbRecord['maxPlayers'],
-            $dbRecord['image']
+            $image
         );
         $room->riddles = $this->riddleService->getAllRiddlesInRoom($room->id, $language);
 

@@ -2,13 +2,19 @@ var importRoomButton = document.getElementById('importRoomButton');
 var importRiddleButton = document.getElementById('importRiddleButton');
 
 importRoomButton.addEventListener('click', function () {
-  readFile("uploadRoomsFile", importRoomsHelper);
-  setTimeout(function () {window.location = 'homepage.html' }, 500);
+  try {
+    readFile("uploadRoomsFile", importRoomsHelper);
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 importRiddleButton.addEventListener('click', function () {
-  readFile("uploadRiddlesFile", importRiddlesHelper);
-  setTimeout(function () {window.location = 'homepage.html' }, 500);
+  try {
+    readFile("uploadRiddlesFile", importRiddlesHelper);
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 function importRoomsHelper(fileContents) {

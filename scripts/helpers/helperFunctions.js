@@ -7,7 +7,12 @@ function downloadFile(fileBlob, fileName, fileExtension) {
 }
 
 function readFile(fileInputId, callback) {
-    var file = document.getElementById(fileInputId).files[0];
+    var fileInput = document.getElementById(fileInputId);
+    if (!fileInput.files.length) {
+        throw new Error("No File Selected");
+    }
+
+    var file = fileInput.files[0];
     var reader = new FileReader();
     reader.onload = function (event) {
         var fileContents = event.target.result;
