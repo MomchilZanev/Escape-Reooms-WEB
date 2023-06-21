@@ -41,11 +41,12 @@ for (var i = 0; i < listItems.length; i++) {
 function openContent(filename) {
 	iframe = top.document.getElementById('innerPage');
 	iframe.width = iframe.contentWindow.document.body.scrollWidth;
-	iframe.height = iframe.contentWindow.document.body.scrollHeight;
+	iframe.height = iframe.contentWindow.document.body.scrollHeight;	
 	iframe.setAttribute("src", filename);
 	iframe.addEventListener("load", function () {
 		var language = getCookie("language") ?? "en";
 		setLanguage(language);
+		iframe.contentWindow.localizationResources = window.localizationResources;
 	});
 }
 

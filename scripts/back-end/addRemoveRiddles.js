@@ -6,7 +6,7 @@ async function getAllRiddles() {
 
   createGetObjects(riddles, 'riddles', 'toDeleteObjectContainer');
   addDeleteButtons(riddles);
-  
+
   for (let i = 0; i < riddles.length; i++) {
     riddles_id.add(riddles[i].id);
   }
@@ -21,7 +21,7 @@ async function getAllRiddles() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-	getAllRiddles();
+  getAllRiddles();
 });
 
 function addDeleteButtons(riddles) {
@@ -49,7 +49,7 @@ function addAddButtons(allRiddles, riddles) {
   for (var i = 0; i < listObjectBoxes.length; i++) {
     var addButton = document.createElement('button');
     addButton.className = "addAndDelete localizedText addButton";
-    addButton.textContent = "Add";
+    addButton.textContent = window.localizationResources["addButton"];
     listObjectBoxes[i].appendChild(addButton);
 
     addButton.addEventListener('click', function () {
