@@ -17,18 +17,24 @@ btnMenu.addEventListener('click', function () {
 // Add the active class and remove it from siblings on list item click
 for (var i = 0; i < listItems.length; i++) {
 	listItems[i].addEventListener('click', function () {
-		this.classList.add('active');
-		var siblings = this.parentNode.children;
-		for (var j = 0; j < siblings.length; j++) {
-			if (siblings[j] !== this) {
-				siblings[j].classList.remove('active');
+		
+		if (this.children[0].id == 'documentation') {
+			window.open("../config/documentation.pdf");
+		
+		} else {
+			this.classList.add('active');
+			var siblings = this.parentNode.children;
+			
+			for (var j = 0; j < siblings.length; j++) {
+				if (siblings[j] !== this) {
+					siblings[j].classList.remove('active');
+				}
 			}
+
+			sessionStorage.clear(); // Sanitizing the session storage when navigating between the major pages
+			sessionStorage.setItem('tempRoom', JSON.stringify(setTempRoomValues()));
+			openContent(this.children[0].id + '.html');
 		}
-
-		sessionStorage.clear(); // Sanitizing the session storage when navigating between the major pages
-		sessionStorage.setItem('tempRoom', JSON.stringify(setTempRoomValues()));
-
-		openContent(this.children[0].id + '.html');
 	});
 }
 
@@ -42,6 +48,8 @@ function openContent(filename) {
 		setLanguage(language);
 	});
 }
+
+sessionStorage.setItem("language", "en");
 
 document.addEventListener("DOMContentLoaded", function () {
 	openContent('homepage.html');
@@ -59,4 +67,4 @@ function setTempRoomValues() {
 	tempItems.id = '';
 	tempItems.riddles = [];
 	return tempItems;
-  }
+}

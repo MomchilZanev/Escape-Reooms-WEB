@@ -6,12 +6,14 @@ englishBtn.addEventListener("click", function () {
 	bulgarianBtn.style.backgroundColor = "#d9d9d9";
 	englishBtn.style.backgroundColor = "#FFDB58";
 	setLanguage("en");
+	sessionStorage.setItem("language", "en");
 });
 
 bulgarianBtn.addEventListener("click", function () {
 	bulgarianBtn.style.backgroundColor = "#FFDB58";
 	englishBtn.style.backgroundColor = "#d9d9d9";
 	setLanguage("bg");
+	sessionStorage.setItem("language", "bg");
 });
 
 function setLanguage(language = "en") {

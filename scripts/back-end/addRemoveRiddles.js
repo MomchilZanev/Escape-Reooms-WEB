@@ -1,15 +1,17 @@
+var currentLanguage = sessionStorage.getItem("language");
+
 async function getAllRiddles() {
   var riddles_id = new Set();
   var riddles = JSON.parse(sessionStorage.getItem("riddles"));
 
   createGetObjects(riddles, 'riddles', 'toDeleteObjectContainer');
   addDeleteButtons(riddles);
-
+  
   for (let i = 0; i < riddles.length; i++) {
     riddles_id.add(riddles[i].id);
   }
 
-  var allRiddles = await fetchGet("riddleController", "getAllRiddles", { language: "en", export: jsonCallback }, jsonCallback);
+  var allRiddles = await fetchGet("riddleController", "getAllRiddles", { language: currentLanguage, export: jsonCallback }, jsonCallback);
   var filterAllRiddles = allRiddles.filter(function (item) {
     return !riddles_id.has(item.id);
   });
@@ -18,7 +20,9 @@ async function getAllRiddles() {
   addAddButtons(allRiddles, riddles);
 }
 
-getAllRiddles();
+document.addEventListener("DOMContentLoaded", async function () {
+	getAllRiddles();
+});
 
 function addDeleteButtons(riddles) {
   const listObjectBoxes = document.querySelectorAll('#toDeleteRiddlesContainer .objectContainer .objectBox');
@@ -39,7 +43,7 @@ function addDeleteButtons(riddles) {
   }
 }
 
-async function addAddButtons(allRiddles, riddles) {
+function addAddButtons(allRiddles, riddles) {
   const listObjectBoxes = document.querySelectorAll('#toAddRiddlesContainer .objectContainer .objectBox');
 
   for (var i = 0; i < listObjectBoxes.length; i++) {

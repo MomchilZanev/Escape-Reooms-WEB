@@ -26,7 +26,7 @@ deleteButton.addEventListener('click', async function () {
     sessionStorage.setItem("objectRoom", JSON.stringify(room));
 
     await fetchPost("riddleController", "deleteRiddle", { id: Number(riddleId) });
-    window.location = document.referrer;
+    window.location = 'homepage.html';
   } else {
     return false;
   }
