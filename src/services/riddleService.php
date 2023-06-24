@@ -299,7 +299,7 @@ class RiddleService
             $translation = $this->db->selectRiddleTranslationsQuery($dbRecord['id'])['data'][0];
         }
 
-        $image = isset($dbRecord['image']) && $dbRecord['image'] !== '' ? $dbRecord['image'] : "/escaperooms/images/no-image-available.jpg";
+        $image = isset($dbRecord['image']) && $dbRecord['image'] !== '' ? $dbRecord['image'] : "no-image-available.jpg";
         $riddle = new Riddle(
             $dbRecord['id'],
             $dbRecord['type'],

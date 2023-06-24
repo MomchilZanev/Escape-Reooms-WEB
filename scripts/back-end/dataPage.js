@@ -5,7 +5,7 @@ function loadDataRoom() {
   var objectTitle = document.getElementsByClassName('dataTitle')[0];
   objectTitle.textContent = object.name;
   var imageTag = document.getElementById('dataImage');
-  imageTag.src = object.image;
+  imageTag.src = object.image == "no-image-available.jpg" ? location.href.split("/escaperooms/")[0] + "/escaperooms/images/" + object.image : object.image;
 
   createMetadata(object.language, 'Language',);
   createMetadata(object.difficulty, 'Difficulty');
@@ -22,7 +22,7 @@ function loadDataRiddle() {
   const object = JSON.parse(objectString);
   
   var imageTag = document.getElementById('dataImage');
-  imageTag.src = object.image;
+  imageTag.src = object.image == "no-image-available.jpg" ? location.href.split("/escaperooms/")[0] + "/escaperooms/images/" + object.image : object.image;
 
   createMetadata(object.language, 'Language');
   createMetadata(object.type, 'Type');

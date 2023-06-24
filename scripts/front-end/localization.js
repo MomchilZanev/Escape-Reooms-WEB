@@ -25,7 +25,7 @@ function setLanguage(language = "en") {
 	}
 
 	const newLocalizationResources = document.createElement("script");
-	newLocalizationResources.src = window.origin + "/escaperooms/scripts/resources/" + language + ".js";
+	newLocalizationResources.src = location.href.split("/escaperooms/")[0] + "/escaperooms/scripts/resources/" + language + ".js";
 	newLocalizationResources.id = "localizationResources";
 	document.head.appendChild(newLocalizationResources);
 

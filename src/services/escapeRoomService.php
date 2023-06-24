@@ -313,7 +313,7 @@ class EscapeRoomService
             $translation = $this->db->selectRoomTranslationsQuery($dbRecord['id'])['data'][0];
         }
 
-        $image = isset($dbRecord['image']) && $dbRecord['image'] !== '' ? $dbRecord['image'] : "/escaperooms/images/no-image-available.jpg";
+        $image = isset($dbRecord['image']) && $dbRecord['image'] !== '' ? $dbRecord['image'] : "no-image-available.jpg";
         $room = new EscapeRoom(
             $dbRecord['id'],
             $translation['name'],

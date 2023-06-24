@@ -50,7 +50,7 @@ function buildGetUrl(controller, action, parameters = {}) {
 }
 
 function buildBaseUrl(controller) {
-    return window.origin + "/escaperooms/src/controllers/" + controller + ".php?";
+    return location.href.split("/escaperooms/")[0] + "/escaperooms/src/controllers/" + controller + ".php?";
 }
 
 function defaultErrorCallback(error) {

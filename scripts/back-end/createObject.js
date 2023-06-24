@@ -21,7 +21,7 @@ function createObject(object, type, container) {
   });
 
   var imageTag = document.createElement('img');
-  imageTag.src = object.image;
+  imageTag.src = object.image == "no-image-available.jpg" ? location.href.split("/escaperooms/")[0] + "/escaperooms/images/" + object.image : object.image;
 
   anchorTag.appendChild(imageTag);
 
