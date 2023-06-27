@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <link rel="stylesheet" href="../css/multipleUsedElements.css" type="text/css">
+  <link rel="stylesheet" href="../css/updateRoom.css" type="text/css">
+  <script src="../scripts/back-end/createObject.js"></script>
+  <script src="../scripts/helpers/fetchApiUtility.js"></script>
+  <script src="../scripts/helpers/helperFunctions.js"></script>
+  <script defer src="../scripts/front-end/showRiddles.js"></script>
+  <script defer src="../scripts/back-end/addRoom.js"></script>
+</head>
+
+<body>
+  <form class="ImportContainer">
+    <div class="formRow">
+      <label for="nameTextBox" class="localizedText filterSearch"></label>
+      <input type="text" id="nameTextBox" class="localizedPlaceholder titlePlaceholder"><br>
+    </div>
+    <div class="formRow">
+      <label for="langTextBox" class="localizedText filterLanguage"></label>
+      <input type="text" id="langTextBox" class="localizedPlaceholder langEN"><br>
+    </div>
+    <div class="formRow">
+      <label for="difficulty" class="localizedText filterDifficulty"></label>
+      <input type="text" class="numTextBox localizedPlaceholder IntPlaceholder" id="difficulty">
+    </div>
+    <div class="formRow">
+      <label for="timeLimit" class="localizedText filterTimeLimit"></label>
+      <input type="text" class="numTextBox localizedPlaceholder IntPlaceholder" id="timeLimit">
+    </div>
+    <div class="formRow">
+      <label for="minPlayers" class="localizedText filterPlayers"></label>
+      <input type="text" class="numTextBox localizedPlaceholder min" id="minPlayers">
+      <label for="maxPlayers" class="localizedText filterPlayers" hidden></label>
+      <input type="text" class="numTextBox localizedPlaceholder max" id="maxPlayers"><br>
+    </div>
+    <div class="formRow">
+      <label for="imgTextBox" class="localizedText imageLabel"></label>
+      <input type="text" id="imgTextBox" class="localizedPlaceholder imagePlaceholder"><br>
+    </div>
+    <div class="formRowButtons">
+      <input type="button" class="formButtons localizedValue addRemoveRiddlesButton" id="addRemoveRiddles">
+      <input type="button" class="formButtons localizedValue applyButton" id="addButton">
+    </div>
+  </form>
+
+  <h2 id="titleAddedRiddles" class="localizedText currentRiddlesTitle"></h2>
+  <div class="objectContainer" id="addRoomRiddles"></div>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #d9d9d9;
+}
+
+.objectContainer {
+  margin: 2% 2% 10px 2%;
+  flex-wrap: wrap;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.objectBox {
+  margin: 0px 3% 3% 3%;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  padding: 10px;
+  width: 160px;
+  height: 270px;
+}
+
+img {
+  height: 225px;
+  width: 150px;
+  border-radius: 10px;
+  border: 1px black solid;
+}
+
+.objectTitle {
+  margin: 0;
+  padding: 0;
+  width: 150px;
+  color: #002f63;
+  word-wrap: break-word;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+
+  overflow: hidden;
+   display: -webkit-box;
+   -webkit-line-clamp: 2;
+   -webkit-box-orient: vertical;
+}
+
+input[type="text"]{
+  background-color: white;
+}
+
+#langTextBox {
+  width: 30px;
+}
+
+.numTextBox {
+  width: 80px;
+}
+
+.riddleTypeTextBox {
+  width: 120px;
+}
+
+.searchTextBox {
+  width: 180px;
+}
+
+.describeTextBox {
+  width: 180px;
+  height: 250px;
+}
+
+#imgTextBox {
+  width: 420px;
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 900px) {
+  #imgTextBox {
+    width: 80%;
+  }
+}
+
+.formRow, .formRowButtons {
+  margin-top: 10px;
+}
+
+input::placeholder, textarea::placeholder {
+  font-style: italic;
+  font-family: 'Poppins', sans-serif;
+}
+
+textarea {
+  width: 80%;
+}
+
+.formButtons {
+  background-color: #002f63;
+  color: #d9d9d9;
+  text-align: center;
+  border-radius: 15px;
+  padding: 6px;
+}
+
+h2 {
+  text-align: center;
+}
+
+a, button, input {
+  cursor: pointer;
+}
+
+input[type="text"] {
+  cursor: text;
+}
+
+.exportRelated {
+  border-radius: 15px;
+  padding: 10px;
+  width: 200px;
+}

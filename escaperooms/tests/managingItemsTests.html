@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Managing Items Tests</title>
+</head>
+<meta charset="utf-8"> <!-- Do Not Remove! Important for file encoding! -->
+
+<body>
+
+    <button type="button" onclick="testGetRoomDetails(false)">Test Get Room Details</button>
+    <br>
+    <button type="button" onclick="testGetRoomDetails(true)">Test Get Room Details Export</button>
+    <br>
+    <button type="button" onclick="testAddRoom()">Test Add Room</button>
+    <br>
+    <button type="button" onclick="testUpdateRoom()">Test Update Room</button>
+    <br>
+    <button type="button" onclick="testTranslateRoom()">Test Translate Room</button>
+    <br>
+    <button type="button" onclick="testDeleteRoom()">Test Delete Room</button>
+    <br>
+    <br>
+    <button type="button" onclick="testGetRiddleDetails(false)">Test Get Riddle Details</button>
+    <br>
+    <button type="button" onclick="testGetRiddleDetails(true)">Test Get Riddle Details Export</button>
+    <br>
+    <button type="button" onclick="testAddRiddle()">Test Add Riddle</button>
+    <br>
+    <button type="button" onclick="testUpdateRiddle()">Test Update Riddle</button>
+    <br>
+    <button type="button" onclick="testTranslateRiddle()">Test Translate Riddle</button>
+    <br>
+    <button type="button" onclick="testDeleteRiddle()">Test Delete Riddle</button>
+    <br>
+    <button type="button" onclick="testAddRoomRiddle()">Test Add RoomRiddle</button>
+    <br>
+    <button type="button" onclick="testDeleteRoomRiddle()">Test Delete RoomRiddle</button>
+</body>
+
+<script src="../scripts/helpers/fetchApiUtility.js"></script>
+<script src="../scripts/helpers/helperFunctions.js"></script>
+
+<script>
+    async function testGetRoomDetails(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("escapeRoomController", "getRoomDetails", { id: 1, language: "en", export: exportParam }, callback);
+
+        if (exportParam) {
+            downloadFile(data, "escape-room-details", "json");
+        }
+        else {
+            console.log(data);
+        }
+    }
+
+    async function testAddRoom() {
+        var roomToAdd = {
+            language: "en",
+            name: "Very new escape room 2",
+            difficulty: 3,
+            timeLimit: 45,
+            minPlayers: 1,
+            maxPlayers: 1,
+            image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg",
+            riddleIds: [ 1, 2 ]
+        };
+
+        await fetchPost("escapeRoomController", "addRoom", { roomJson: roomToAdd });
+    }
+
+    async function testUpdateRoom() {
+        var roomToUpdate = {
+            id: 1,
+            language: "en",
+            name: "Sample escape room",
+            difficulty: 4,
+            timeLimit: 60,
+            minPlayers: 1,
+            maxPlayers: 2,
+            image: "https://escapetheroom.com/wp-content/uploads/2018/11/escape-the-room-head.jpg",
+            riddleIds: [ 3, 4 ]
+        };
+
+        await fetchPost("escapeRoomController", "updateRoom", { roomJson: roomToUpdate });
+    }
+
+    async function testTranslateRoom() {
+        var roomToTranslate = {
+            id: 1,
+            language: "fr",
+            name: "Exemple de salle d'évasion"
+        };
+
+        await fetchPost("escapeRoomController", "translateRoom", { roomJson: roomToTranslate });
+    }
+
+    async function testDeleteRoom() {
+        var roomToDeleteId = 17;
+        await fetchPost("escapeRoomController", "deleteRoom", { id: roomToDeleteId });
+    }
+</script>
+
+<script>
+    async function testGetRiddleDetails(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("riddleController", "getRiddleDetails", { id: 1, language: "en", export: exportParam }, callback);
+
+        if (exportParam) {
+            downloadFile(data, "riddle-details", "json");
+        }
+        else {
+            console.log(data);
+        }
+    }
+
+    async function testAddRiddle() {
+        var riddleToAdd = {
+            type: "rebus",
+            language: "en",
+            task: "New task",
+            solution: "New solution",
+            image: "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-4.jpg"
+        };
+
+        await fetchPost("riddleController", "addRiddle", { riddleJson: riddleToAdd });
+    }
+
+    async function testUpdateRiddle() {
+        var riddleToUpdate = {
+            id: 2,
+            type: "colors",
+            language: "en",
+            task: "New riddle task",
+            solution: "New riddle solution",
+            image: "https://teambuilding.com/wp-content/uploads/2020/11/escape-room-puzzle-4.jpg"
+        };
+
+        await fetchPost("riddleController", "updateRiddle", { riddleJson: riddleToUpdate });
+    }
+
+    async function testTranslateRiddle() {
+        var riddleToTranslate = {
+            id: 1,
+            language: "fr",
+            task: "Tâche factice 1",
+            solution: "Solution factice 1"
+        };
+
+        await fetchPost("riddleController", "translateRiddle", { riddleJson: riddleToTranslate });
+    }
+
+    async function testDeleteRiddle() {
+        var riddleToDeleteId = 3;
+        await fetchPost("riddleController", "deleteRiddle", { id: riddleToDeleteId });
+    }
+
+    async function testAddRoomRiddle() {
+        var roomId = 1;
+        var riddleId = 5;
+        await fetchPost("riddleController", "addRoomRiddle", { roomId: roomId, riddleId: riddleId });
+    }
+
+    async function testDeleteRoomRiddle() {
+        var roomId = 1;
+        var riddleId = 5;
+        await fetchPost("riddleController", "deleteRoomRiddle", { roomId: roomId, riddleId: riddleId });
+    }
+</script>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Listing Items Tests</title>
+</head>
+<meta charset="utf-8"> <!-- Do Not Remove! Important for file encoding! -->
+
+<body>
+
+    <button type="button" onclick="testGetAllRooms(false)">Test Get All Rooms</button>
+    <br>
+    <button type="button" onclick="testGetAllRooms(true)">Test Get All Rooms Export</button>
+    <br>
+    <button type="button" onclick="testFilterRooms(false)">Test Filter Rooms</button>
+    <br>
+    <button type="button" onclick="testFilterRooms(true)">Test Filter Rooms Export</button>
+    <br>
+    <button type="button" onclick="testGetAllRiddles(false)">Test Get All Riddles</button>
+    <br>
+    <button type="button" onclick="testGetAllRiddles(true)">Test Get All Riddles Export</button>
+
+</body>
+
+<script src="../scripts/helpers/fetchApiUtility.js"></script>
+<script src="../scripts/helpers/helperFunctions.js"></script>
+
+<script>
+    async function testGetAllRooms(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("escapeRoomController", "getAllRooms", { language: "en", export: exportParam }, callback);
+
+        if (exportParam) {
+            downloadFile(data, "all-escape-rooms", "json");
+        }
+        else {
+            console.log(data);
+        }
+    }
+
+    async function testFilterRooms(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("escapeRoomController", "filterRooms", { language: "en", export: exportParam }, callback);
+        
+        if (exportParam) {
+            downloadFile(data, "filtered-escape-rooms", "json");
+        }
+        else {
+            console.log(data);
+        }
+    }
+
+    async function testGetAllRiddles(exportParam = false) {
+        var callback = exportParam ? blobCallback : jsonCallback;
+        var data = await fetchGet("riddleController", "getAllRiddles", { language: "en", export: exportParam }, callback);
+
+        if (exportParam) {
+            downloadFile(data, "all-riddles", "json");
+        }
+        else {
+            console.log(data);
+        }
+    }
+</script>
+
+</html>
